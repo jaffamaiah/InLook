@@ -1,0 +1,17 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run test commands
+        run: |
+          echo This will contain actually useful commands once we set the project up :),
+          echo Pretty Promise.
