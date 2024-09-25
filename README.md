@@ -1,5 +1,5 @@
 # InLook
-Work in Progress - App to incentivize consistent journaling
+Work in Progress - App to incentivize consistent journaling habits
 
 ## Gamified Journaling
 - Earn rewards and achievements for meeting journaling goals!
@@ -10,6 +10,6 @@ Work in Progress - App to incentivize consistent journaling
 ## Developers
 ### University of Florida
 - Arman Chowdhury
-- Heather CastoHeather Casto
-- Maiah JaffaMaiah Jaffa
-- Tomas MejiaTomas Mejia 
+- Heather Casto
+- Maiah Jaffa
+- Tomas Mejia
