@@ -27,7 +27,7 @@ def members():
             "job": "frontend"
         },
     ])
-    response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
+    response.headers.add('Access-Control-Allow-Origin', 'http://localhost:8080')
     return response
 
 if __name__ == "__main__":
