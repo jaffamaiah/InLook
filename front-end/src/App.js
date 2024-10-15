@@ -3,12 +3,14 @@ import Layout from "./pages/Layout"
 import Home from "./pages/Home"
 import People from "./pages/People"
 import Page404 from "./pages/Page404"
+import LoginPage from "./pages/LoginPage"
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
+        <Route path="/login" element={<LoginPage />} />
           <Route index element={<Home />} />
           <Route path="people" element={<People />} />
           <Route path="*" element={<Page404 />} />

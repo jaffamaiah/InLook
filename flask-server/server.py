@@ -1,6 +1,18 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request, redirect, url_for
+
 
 app = Flask(__name__)
+
+# Login route - DOES NOT WORK YET
+@app.route("/login", methods=["POST"])
+def login_user():
+    username = request.json["username"]
+    password = request.json["password"]
+  
+    if username == 'admin' and password == 'admin':
+        return redirect(url_for('Home'))
+    else:
+        return {"msg": "Wrong email or password"}, 401
 
 # Members API Route
 @app.route("/people_endpoint")
