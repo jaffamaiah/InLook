@@ -1,21 +1,24 @@
 from flask import Flask, jsonify, request, redirect, url_for
+from flask_cors import CORS
 
 
 app = Flask(__name__)
 
+CORS(app, supports_credentials=True) # allows app to get past 'Access-Control-Allow-Origin' check
+
 # Login route - DOES NOT WORK YET
 @app.route("/login", methods=["POST"])
 def login_user():
-    username = request.json["username"]
-    password = request.json["password"]
+    username = request.json.get("username")
+    password = request.json.get("password")
   
     if username == 'admin' and password == 'admin':
-        return redirect(url_for('Home'))
+        return jsonify({"msg": "Login successful", "redirect": "/people"}), 200
     else:
-        return {"msg": "Wrong email or password"}, 401
+        return {"msg": "Wrong username or password"}, 401
 
 # Members API Route
-@app.route("/people_endpoint")
+@app.route("/people")
 def members():
     response = jsonify([
         {

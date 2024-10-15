@@ -11,10 +11,10 @@ export default function LoginPage(){
      
     const logInUser = () => {
         if(username.length === 0){
-          alert("username has left Blank!");
+          alert("Username has been left blank!");
         }
         else if(password.length === 0){
-          alert("password has left Blank!");
+          alert("Password has been left blank!");
         }
         else{
             axios.post('http://127.0.0.1:5000/login', {
@@ -24,13 +24,19 @@ export default function LoginPage(){
             .then(function (response) {
                 console.log(response);
                 //console.log(response.data);
-                navigate("/");
+                if (response.data.redirect) {
+                  navigate(response.data.redirect);
+              } else {
+                  navigate("/");
+              }
             })
             .catch(function (error) {
+              if (error.response) {
                 console.log(error, 'error');
                 if (error.response.status === 401) {
                     alert("Invalid credentials");
                 }
+              }
             });
         }
     }
@@ -54,8 +60,8 @@ export default function LoginPage(){
                   </div>
  
                   <div className="form-outline mb-4">
-                    <input type="username" value={username} onChange={(e) => setusername(e.target.value)} id="form3Example3" className="form-control form-control-lg" placeholder="Enter a valid username address" />
-                    <label className="form-label" for="form3Example3">username address</label>
+                    <input type="username" value={username} onChange={(e) => setusername(e.target.value)} id="form3Example3" className="form-control form-control-lg" placeholder="Enter a valid username" />
+                    <label className="form-label" for="form3Example3">username</label>
                   </div>
  
              
