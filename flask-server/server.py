@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 CORS(app, supports_credentials=True) # allows app to get past 'Access-Control-Allow-Origin' check
 
-# Login route - DOES NOT WORK YET
+# Login route
 @app.route("/login", methods=["POST"])
 def login_user():
     username = request.json.get("username")
