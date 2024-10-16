@@ -8,7 +8,7 @@ function People() {
 
     // Fetch data from the API using axios.get(), store the result in data
     useEffect(() => {
-    axios.get("http://localhost:5000/people_endpoint")
+    axios.get("http://localhost:5000/people")
         .then(
             (result) => { setData(result.data) }
         )
