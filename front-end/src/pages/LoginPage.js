@@ -17,7 +17,7 @@ export default function LoginPage(){
           alert("Password has been left blank!");
         }
         else{
-            axios.post('localhost:8080/login', {
+            axios.post('http://localhost:8080/login', {
                 username: username,
                 password: password
             })
