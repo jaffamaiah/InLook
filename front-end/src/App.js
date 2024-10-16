@@ -7,7 +7,7 @@ function App() {
   const [data, setData ] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/people_endpoint")
+    axios.get("http://localhost:3000/people_endpoint")
     .then(
       (res) => {
         setData(res.data);
