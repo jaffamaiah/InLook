@@ -4,23 +4,22 @@ import axios from "axios"
 function People() {
 
     // Declare variable `fetchedData` and `setData()` as the function to modify it
-    const [fetchedData, setData ] = useState([])
+    const [fetchedData, setData] = useState([])
 
     // Fetch data from the API using axios.get(), store the result in data
     useEffect(() => {
-    axios.get("http://localhost:8080/people")
-        .then(
-            (result) => { setData(result.data) }
-        )
+        axios.get("http://localhost:8080/people")
+            .then(
+                (result) => { setData(result.data) }
+            )
     }, [])
 
     return <div>{
         // Return an html element for each element in the fetchedData
         fetchedData.map((person) => {
-          return <h1>{person.name + " " + person.id + " " + person.job}</h1>
+            return <h1>{person.name + " " + person.id + " " + person.job}</h1>
         })
-      }</div>
-  };
-  
-  export default People
-  
+    }</div>
+}
+
+export default People
