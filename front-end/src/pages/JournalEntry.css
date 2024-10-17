@@ -1,0 +1,6 @@
+.journal-textbox {
+    border: 2px solid #525252;
+    color: black;
+    padding: 10px;
+    overflow-y: auto;
+}
