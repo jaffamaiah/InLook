@@ -1,25 +1,27 @@
-import { Outlet, Link } from "react-router-dom"
+import "./NavBar.css"
 
-const Layout = () => {
-  return (
-    <>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/people">People</Link>
-          </li>
-          <li>
-            <Link to="/login">Login</Link>
-          </li>
-        </ul>
-      </nav>
+const NavBar = () => {
+  return <nav className="navbar">
+    <div className="navbar-left">
+      <a href="/" className="logo">
+        InLook
+      </a>
+    </div>
+    <div className="navbar-center">
+      <ul className="nav-links">
+        <li>
+          <a href="/people">People</a>
+        </li>
+        <li>
+          <a href="/login">Login</a>
+        </li>
+        <li>
+          <a href="/journal">Journal</a>
+        </li>
+      </ul>
+    </div>
+    <div className="navbar-right"></div>
+  </nav>
+}
 
-      <Outlet />
-    </>
-  )
-};
-
-export default Layout
+export default NavBar
