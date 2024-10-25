@@ -1,0 +1,67 @@
+/* TOP NAVBAR */
+.navbar {
+    height: 10vh;
+    width: 100vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: #fff;
+    position: fixed;
+    top: 0;
+}
+
+.toggle-button {
+    float: right;
+    width: 5vw;
+    position: relative;
+    left: 1vh;
+}
+
+.logo {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* SIDEBAR */
+.sidebar {
+    height: 90vh;
+    width: 20vw;
+    position: fixed;
+    left: -20vw;
+    bottom: 0px;
+    transition: left 0.3s ease-in-out;
+    background-color: #555;
+}
+
+.sidebar.open {
+    left: 0px;
+}
+
+.nav-links {
+    list-style: none;
+}
+
+.nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+/* DEFOCUS AREA */
+.sidebar-defocus-area {
+    height: 0;
+    width: 100vw;
+    background-color:black;
+    opacity: 0.4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-defocus-area.open{
+    height: 200vh;
+}
