@@ -44,5 +44,11 @@ def members():
     ])
     return response
 
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    return 'OK', 200
+
 if __name__ == "__main__":
     app.run(debug=True, port=8080)
