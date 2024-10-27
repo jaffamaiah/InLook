@@ -119,6 +119,11 @@ def login_user():
 #     }, 200
 
 
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    return 'OK', 200
+
 # ==================== LAUNCH ====================
 if __name__ == "__main__":
     app.run(debug=True, port=8080)
