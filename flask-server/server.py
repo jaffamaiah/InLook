@@ -12,7 +12,13 @@ app = Flask(__name__)
 app.config.from_object(DevConfig)
 CORS(app, supports_credentials=True)
 
-logging.basicConfig(filename='flask-server/app.log', level=logging.DEBUG)
+try:
+    open(file='./flask-server/app.log', mode="w").close()
+    logging.basicConfig(filename='./flask-server/app.log', level=logging.DEBUG)
+except FileNotFoundError:
+    open(file='./app.log', mode="w").close()
+    logging.basicConfig(filename='./app.log', level=logging.DEBUG)
+    
 
 db.init_app(app)
 api = Api(app,doc='/docs')
