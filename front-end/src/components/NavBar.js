@@ -37,6 +37,9 @@ const NavBar = () => {
         <li>
           <a href="/journal">Journal</a>
         </li>
+        <li>
+          <a href="/view-journals">JournalView</a>
+        </li>
       </ul>
     </nav>
     
