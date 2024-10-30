@@ -23,7 +23,7 @@ jobs:
     - name: Install Node.js dependencies
       run: cd ./front-end/ && npm ci
     - name: Run Node.js front-end
-      run: cd ./front-end/ && npm start & npx wait-on http://localhost:3000
+      run: cd ./front-end/ && npm start & npx wait-on --timeout 30s http://localhost:3000
         
     - name: Set up Python
       uses: actions/setup-python@v3
@@ -32,4 +32,4 @@ jobs:
     - name: Install Python dependencies
       run: python -m pip install -r ./flask-server/requirements.txt
     - name: Run Flask back-end
-      run: python ./flask-server/server.py & npx wait-on http://localhost:8080/x
+      run: python ./flask-server/server.py & npx wait-on --timeout 30s http://localhost:8080/health

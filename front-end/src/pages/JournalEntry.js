@@ -29,7 +29,7 @@ const JournalEntry = () => {
             return alert("Title has been left blank!")
         if (journalEntryText.length === 0)
             return alert("Journal has been left blank!")
-        axios.post('http://localhost:8080/write_journal', {
+        axios.post('http://localhost:8080/create-journal', {
             title: title,
             entry_text: journalEntryText,
             date_time: todaysDate.toISOString()
