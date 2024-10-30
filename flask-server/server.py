@@ -34,7 +34,7 @@ journal_model=api.model(
 
 
 # ==================== JOURNAL ENDPOINTS ====================
-@api.route('/journals')
+@api.route('/write_journal')
 class JournalsResource(Resource):
     @api.marshal_list_with(journal_model)
     def get(self):
@@ -77,6 +77,8 @@ class JournalResource(Resource):
        journal_to_delete=Journal.query.get_or_404(id)
        journal_to_delete.delete()
        return journal_to_delete
+    
+
 
 
 @app.shell_context_processor
