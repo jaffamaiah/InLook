@@ -17,7 +17,7 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="journal" element={<JournalEntry />} />
-          <Route path="view-journals" element={<JournalView />} />
+          <Route path="view-journals/:id" element={<JournalView />} />
           <Route path="*" element={<Page404 />} />
         </Routes>
       </BrowserRouter>

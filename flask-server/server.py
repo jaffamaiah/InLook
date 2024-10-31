@@ -126,7 +126,7 @@ def login_user():
 #     }, 200
 
 
-# ==================== DEFAULT ENDPOINT ====================
+# ==================== HEALTH-CHECK ENDPOINT ====================
 @app.route("/health")
 def health_check():
     return 'OK', 200

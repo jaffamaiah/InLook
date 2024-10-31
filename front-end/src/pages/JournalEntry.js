@@ -21,10 +21,17 @@ const JournalEntry = () => {
     const [entry, setEntry] = useState(initialEntry)
     const [title, setTitle] = useState('')
 
-    function getEntryText() { return entry[0]["children"][0]["text"] }
+    function getEntryText() {
+        let entryText = entry[0]["children"][0]["text"]
+        for (let i = 1; i < entry.length; i++) {
+            entryText += "\n" + entry[i]["children"][0]["text"]
+        }
+        return entryText
+    }
 
     const submitJournal = () => {
         const journalEntryText = getEntryText()
+        console.log(journalEntryText)
         if (title.length === 0)
             return alert("Title has been left blank!")
         if (journalEntryText.length === 0)
