@@ -7,47 +7,47 @@ import { createEditor } from 'slate';
 const JournalView = () => {
     const { id } = useParams();
 
-    const [fetchedData, setData] = useState([])
-    let journalComponent
-    let slateEntry
+    const [journalData, setJournalData] = useState(null)
+    const [error, setError] = useState(null)
 
-    // Fetch journals
     useEffect(() => {
-        axios.get("http://localhost:8080/journal/" + id)
-            .then(
-                (journals) => { setData(journals.data) }
-            )
-            .catch(
-                () => { setData("") }
-            )
-    }, [])
-
-    // Create journalComponent
-    if (fetchedData.length === 0) { // error when fetching data
-        journalComponent = <h1>{"Journal with id " + id + " not found!"}</h1>
-    } else {
-        console.log(fetchedData)
-        slateEntry = []
-        
-        fetchedData["entry_text"].split("\n").forEach((line) => {
-            slateEntry.push(
-                {
-                    type: 'paragraph',
-                    children: [{ text: line }],
+        axios.get(`http://localhost:8080/journal/${id}`)
+            .then((response) => {
+                let slateEntry = []
+                response.data["entry_text"].split("\n").forEach((line) => {
+                    slateEntry.push(
+                        {
+                            type: 'paragraph',
+                            children: [{ text: line }],
+                        }
+                    )
+                })
+                setJournalData(
+                    {
+                        "title": response.data.title,
+                        "entry": slateEntry
+                    }
+                )
+            })
+            .catch((error) => {
+                if (error["status"] === 404) {
+                    setError(`Error: Journal with ID ${id} not found!`)
+                } else {
+                    console.log(error)
+                    setError(`Error: check console!`)
                 }
-            )
-        })
-        journalComponent = <div>
-            <h2>{fetchedData.title}</h2>
-            <Slate editor={createEditor()} initialValue={slateEntry} onChange={() => { }}>
-                <Editable readOnly />
-            </Slate>
-        </div>
-    }
+            })
+    }, [id])
 
     return <div>
         <h1>Journal View</h1>
-        {journalComponent}
+        {error && <h2>{error}</h2>}
+        {journalData && <div>
+            <h2>{`Title: ${journalData.title}`}</h2>
+            <Slate editor={createEditor()} initialValue={journalData.entry}>
+                <Editable readOnly />
+            </Slate>
+        </div>}
     </div>
 }
 
