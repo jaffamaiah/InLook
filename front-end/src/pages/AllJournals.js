@@ -26,7 +26,7 @@ const AllJournals = () => {
         {journalEntries && (
             <div className="journal-grid">{
                 journalEntries.map(journal => (
-                    <JournalIcon id={journal.id} title={journal.title} date={journal.date}/>
+                    <JournalIcon id={journal.id} title={journal.title} date={journal.date} />
                 ))
             }</div>
         )}
