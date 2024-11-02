@@ -4,7 +4,8 @@ import NavBar from "./components/NavBar"
 import "./App.css"
 
 import Home from "./pages/Home"
-import LoginPage from "./pages/LoginPage"
+import LogIn from "./pages/LogIn"
+import SignUp from "./pages/SignUp"
 import JournalWrite from "./pages/JournalWrite"
 import JournalView from "./pages/JournalView"
 import Page404 from "./pages/Page404"
@@ -16,7 +17,8 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route index element={<Home />} />
-          <Route path="login" element={<LoginPage />} />
+          <Route path="login" element={<LogIn />} />
+          <Route path="signup" element={<SignUp />} />
           <Route path="journal" element={<JournalWrite />} />
           <Route path="view-journals" element={<AllJournals />} />
           <Route path="view-journals/:id" element={<JournalView />} />
