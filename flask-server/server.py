@@ -1,17 +1,26 @@
 from flask import Flask, jsonify, request, redirect, url_for, request
 from flask_restx import Api, Resource, fields
 from flask_cors import CORS
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import JWTManager
 from config import DevConfig
 from models import Journal
 from exts import db
 from datetime import datetime
 import logging
+import os
 
 # ==================== CONFIGURATION ====================
 # Flask
 app = Flask(__name__)
 app.config.from_object(DevConfig)
 CORS(app, supports_credentials=True)
+
+# Flask-JWT-Extended
+app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET')
+jwt = JWTManager(app)
 
 # Logging
 try:
@@ -103,29 +112,19 @@ def login_user():
         return {
             "msg": "Wrong username or password"
         }, 401
-
-
-# # Members API Route
-# @app.route("/journal_submit", methods=["POST"])
-# def journal_submit():
-#     title = request.json.get("title")
-#     entry_text = request.json.get("entry_text")
-#     date_time = request.json.get("date_time") # date_time is the datetime string from the frontend, while date is just the date in the desired format
-
-#     # get date and put into mm/dd/yyyy format
-#     date_time = date_time.strptime(date_time, "%Y-%m-%dT%H:%M:%S.%fZ")
-#     date = date_time.strftime("%m") + "/" + date_time.strftime("%d") + "/" + date_time.strftime("%Y")
-
-#     # # log values stored in journal object
-#     app.logger.info('Journal title: %s', title)
-#     app.logger.info('Journal entry text: %s', entry_text)
-#     app.logger.info('Journal date: %s', date)
     
-#     return {
-#         "msg": "Journal created"
-#     }, 200
-
-
+@app.route("/token", methods=["POST"])
+def create_token():
+    username = request.json.get("username")
+    password = request.json.get("password")
+    
+    # Add your user authentication logic here
+    if username == 'admin' and password == 'admin':
+        access_token = create_access_token(identity=username)
+        return jsonify(access_token=access_token), 200
+    else:
+        return jsonify(msg="Wrong username or password"), 401
+    
 # ==================== HEALTH-CHECK ENDPOINT ====================
 @app.route("/health")
 def health_check():
