@@ -25,6 +25,7 @@ const JournalView = () => {
                 setJournalData(
                     {
                         "title": response.data.title,
+                        "date": response.data.date,
                         "entry": slateEntry
                     }
                 )
@@ -44,6 +45,7 @@ const JournalView = () => {
         {error && <h2>{error}</h2>}
         {journalData && <div>
             <h2>{`Title: ${journalData.title}`}</h2>
+            <h2>{`Date: ${journalData.date}`}</h2>
             <Slate editor={createEditor()} initialValue={journalData.entry}>
                 <Editable readOnly />
             </Slate>

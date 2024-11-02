@@ -2,9 +2,10 @@ import React, { useMemo, useState } from 'react';
 import { Slate, Editable, withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
 import { createEditor } from 'slate';
+import { useNavigate } from "react-router-dom"
 import axios from 'axios'
 
-import "./JournalEntry.css"
+import "./JournalWrite.css"
 
 const initialEntry = [
     {
@@ -15,11 +16,13 @@ const initialEntry = [
 
 const todaysDate = new Date()
 
-const JournalEntry = () => {
+const JournalWrite = () => {
 
     const editor = useMemo(() => withHistory(withReact(createEditor())), []);
     const [entry, setEntry] = useState(initialEntry)
     const [title, setTitle] = useState('')
+
+    const navigate = useNavigate()
 
     function getEntryText() {
         let entryText = entry[0]["children"][0]["text"]
@@ -31,7 +34,6 @@ const JournalEntry = () => {
 
     const submitJournal = () => {
         const journalEntryText = getEntryText()
-        console.log(journalEntryText)
         if (title.length === 0)
             return alert("Title has been left blank!")
         if (journalEntryText.length === 0)
@@ -42,10 +44,10 @@ const JournalEntry = () => {
             date_time: todaysDate.toISOString()
         })
             .then(function (response) {
-                console.log(response)
+                navigate(`/view-journals/${response.data.id}`)
             })
             .catch(function (error) {
-                console.log(error, 'error')
+                console.log(error)
                 alert("Invalid journal")
             })
     }
@@ -66,4 +68,4 @@ const JournalEntry = () => {
 }
 
 
-export default JournalEntry
+export default JournalWrite

@@ -1,0 +1,8 @@
+.journal-icon {
+    display: inline-block;
+    width: 30vw;
+    height: 30vh;
+    border-radius: 5px;
+    border: 3px solid black;
+    text-align: center;
+}
