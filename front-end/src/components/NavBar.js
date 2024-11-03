@@ -11,7 +11,7 @@ const NavBar = () => {
         setIsOpen(!isOpen);
     };
 
-    return (<div>
+    return <div>
 
         <div className={`sidebar-defocus-area ${isOpen ? 'open' : ''}`} onClick={toggleSidebar} />
 
@@ -42,7 +42,7 @@ const NavBar = () => {
             </ul>
         </nav>
 
-    </div>)
+    </div>
 }
 
 export default NavBar

@@ -1,4 +1,12 @@
 /* eslint-disable no-unused-vars */
+import Home from "./pages/Home"
+import LogIn from "./pages/LogIn"
+import SignUp from "./pages/SignUp"
+import JournalWrite from "./pages/JournalWrite"
+import AllJournals from "./pages/AllJournals"
+import JournalView from "./pages/JournalView"
+import Page404 from "./pages/Page404"
+
 
 export const emotions = {
     happy: {
@@ -13,38 +21,47 @@ export const emotions = {
 }
 
 
-
 export const pages = {
+    Home: {
+        name: 'Home',
+        path: '/',
+        component: <Home/>,
+        sidebar: false,
+    },
     LogIn: {
-        path: '/login',
-        sidebar: true,
         name: 'Log In',
+        path: '/login',
+        component: <LogIn/>,
+        sidebar: true,
     },
     SignUp: {
-        path: '/signup',
-        sidebar: true,
         name: 'Sign Up',
-    },
-
-    JournalWrite: {
-        path: '/journal',
+        path: '/signup',
+        component: <SignUp/>,
         sidebar: true,
+    },
+    JournalWrite: {
         name: 'Write Journal',
+        path: '/journal',
+        component: <JournalWrite/>,
+        sidebar: true,
     },
     AllJournals: {
-        path: '/view-journals',
-        sidebar: true,
         name: 'View Journals',
+        path: '/view-journals',
+        component: <AllJournals/>,
+        sidebar: true,
     },
     JournalView: {
-        path: '/view-journals/:id',
-        sidebar: false,
         name: 'View Journal',
-    },
-
-    Page404: {
-        path: '*',
+        path: '/view-journals/:id',
+        component: <JournalView/>,
         sidebar: false,
+    },
+    Page404: {
         name: '404 Page',
+        path: '*',
+        component: <Page404/>,
+        sidebar: false,
     },
 }
