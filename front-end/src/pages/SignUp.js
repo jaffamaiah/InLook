@@ -7,7 +7,7 @@ export default function SignUp() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
     const signUpUser = () => {
         if (username.length === 0)
@@ -35,7 +35,7 @@ export default function SignUp() {
     }
 
 
-    return (<div>
+    return <div>
         <h1>Sign Up</h1>
         <form>
             <div>
@@ -50,5 +50,5 @@ export default function SignUp() {
 
             <button type="button" onClick={signUpUser} >Sign Up</button>
         </form>
-    </div>)
+    </div>
 }

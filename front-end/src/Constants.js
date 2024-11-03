@@ -10,12 +10,15 @@ import Page404 from "./pages/Page404"
 
 export const emotions = {
     happy: {
+        name: 'Happy',
         color: 'yellow'
     },
     sad: {
+        name: 'Sad',
         color: 'blue'
     },
     angry: {
+        name: 'Angry',
         color: 'red'
     }
 }

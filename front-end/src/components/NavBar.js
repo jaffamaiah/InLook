@@ -17,7 +17,11 @@ const NavBar = () => {
 
         <nav className="navbar">
             <div className="navbar-left">
-                <button className='toggle-button' onClick={toggleSidebar}>Sidebar</button>
+                <img src="/hamburger-menu.png" alt="Logo" className='toggle-button' onClick={toggleSidebar} />
+                {/* 
+                Icon by HideMaru
+                "https://www.freepik.com/icon/settings_13895453#fromView=search&page=1&position=5&uuid=47877187-26c6-4a38-bee1-2f315e7ef351"
+                */}
             </div>
             <div className="navbar-center">
                 <a href="/" className="logo">

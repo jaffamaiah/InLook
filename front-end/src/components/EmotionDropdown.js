@@ -10,15 +10,33 @@ function EmotionDropdown({ onOptionSelect }) {
         onOptionSelect(event.target.value) // Notify parent
     }
 
-    return (
-        <select value={selectedOption} onChange={handleOptionSelect}>{
-            Object.entries(emotions).map(([emotionName]) => (
-                <option key={emotionName}>
-                    {emotionName}
-                </option>
-            ))
-        }</select>
-    )
+    return <div>
+        <select value={selectedOption} onChange={handleOptionSelect} style={{
+            width: '150px'
+        }}>
+            {!selectedOption &&
+                <option value="">Tag an Emotion</option>
+            }
+            {
+                Object.entries(emotions).map(([emotionName, emotionProperties]) => (
+                    <option key={emotionName} value={emotionName} >
+                        {emotionProperties.name}
+                    </option>
+                ))
+            }
+        </select>
+
+        {!!selectedOption &&
+            <span style={{
+                display: 'inline-block',
+                width: '15px',
+                height: '15px',
+                borderRadius: '50%',
+                marginRight: '5px',
+                backgroundColor: emotions[selectedOption].color
+            }} />
+        }
+    </div>
 }
 
 export default EmotionDropdown;

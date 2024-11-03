@@ -33,8 +33,8 @@ export default function LogIn() {
     }
 
 
-    return (<div>
-        <h1>Login</h1>
+    return <div>
+        <h1>Log In</h1>
         <form>
             <div>
                 <input type="username" onChange={(e) => setUsername(e.target.value)} />
@@ -48,5 +48,5 @@ export default function LogIn() {
 
             <button type="button" onClick={logInUser} >Log In</button>
         </form>
-    </div>)
+    </div>
 }

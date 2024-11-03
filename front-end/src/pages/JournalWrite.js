@@ -35,7 +35,6 @@ const JournalWrite = () => {
     }
 
     const submitJournal = () => {
-        console.log(emotion)
         const journalEntryText = getEntryText()
         if (title.length === 0)
             return alert("Title has been left blank!")
@@ -45,7 +44,7 @@ const JournalWrite = () => {
             title: title,
             entry_text: journalEntryText,
             date_time: todaysDate.toISOString(),
-            emotion: emotion
+            emotion: (!!emotion ? emotion : '') // empty string if emotion is null
         })
             .then(function (response) {
                 navigate(`/view-journals/${response.data.id}`)
@@ -56,23 +55,27 @@ const JournalWrite = () => {
             })
     }
 
-    return (<div> <h1>Journal</h1>
+    return <div>
+        <h1>Write Journal</h1>
+
         <h2>{
             todaysDate.toLocaleString('en-US', {
                 year: 'numeric', month: 'long', day: 'numeric'
             })
         }</h2>
 
-        <input type="title" value={title} onChange={(newTitle) => setTitle(newTitle.target.value)} className="title-textbox" placeholder="Enter a title" />
-        
+        <input className="title-textbox" type="title" value={title} onChange={(newTitle) => setTitle(newTitle.target.value)} placeholder="Enter a title" />
+
         <Slate editor={editor} initialValue={entry} onChange={(newEntryValue) => setEntry(newEntryValue)}>
             <Editable className="journal-textbox" placeholder="Today I am feeling..." />
         </Slate>
-        
-        <EmotionDropdown onOptionSelect={(emotion) => {setEmotion(emotion)}} />
-        
-        <button type="button" className="submit-button" onClick={submitJournal} >Submit</button>
-    </div>)
+
+        <div className="emotion-dropdown">
+            <EmotionDropdown onOptionSelect={(emotion) => { setEmotion(emotion) }} />
+        </div>
+
+        <button className="submit-button" type="button" onClick={submitJournal} >Submit</button>
+    </div>
 }
 
 
