@@ -48,11 +48,15 @@ journal_model=api.model(
 @app.route("/create-journal", methods=["POST"])
 @api.marshal_with(journal_model)
 def create_journal():
-    data=request.get_json()
+    data = request.get_json()
+    # formatting date time string to mm-dd-yyyy
+    date_time_string = data.get('date_time')
+    dt = datetime.strptime(date_time_string, "%Y-%m-%dT%H:%M:%S.%fZ")
+    formatted_date = dt.strftime("%m-%d-%Y")
     new_journal=Journal(
         title=data.get('title'),
         entry_text=data.get('entry_text'),
-        date='',  # TODO
+        date=formatted_date,
         emotion=''  # TODO
     )
     new_journal.save()
@@ -98,27 +102,27 @@ def make_shell_context():
 
 
 # ==================== LOGIN ENDPOINTS ====================
+# @app.route("/login", methods=["POST"])
+# def login_user():
+#     username = request.json.get("username")
+#     password = request.json.get("password")
+    
+#     if username == 'admin' and password == 'admin':
+#         return {
+#             "msg": "Login successful",
+#             "redirect": "/"
+#         }, 200
+#     else:
+#         return {
+#             "msg": "Wrong username or password"
+#         }, 401
+    
 @app.route("/login", methods=["POST"])
-def login_user():
-    username = request.json.get("username")
-    password = request.json.get("password")
-    
-    if username == 'admin' and password == 'admin':
-        return {
-            "msg": "Login successful",
-            "redirect": "/"
-        }, 200
-    else:
-        return {
-            "msg": "Wrong username or password"
-        }, 401
-    
-@app.route("/token", methods=["POST"])
 def create_token():
     username = request.json.get("username")
     password = request.json.get("password")
     
-    # Add your user authentication logic here
+    # Add your user authentication logic here (searching database for a match)
     if username == 'admin' and password == 'admin':
         access_token = create_access_token(identity=username)
         return jsonify(access_token=access_token), 200
