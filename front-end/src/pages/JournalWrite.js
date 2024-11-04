@@ -5,6 +5,7 @@ import { createEditor } from 'slate';
 import { useNavigate } from "react-router-dom"
 import axios from 'axios'
 
+import EmotionDropdown from "../components/EmotionDropdown"
 import "./JournalWrite.css"
 
 const initialEntry = [
@@ -21,6 +22,7 @@ const JournalWrite = () => {
     const editor = useMemo(() => withHistory(withReact(createEditor())), []);
     const [entry, setEntry] = useState(initialEntry)
     const [title, setTitle] = useState('')
+    const [emotion, setEmotion] = useState(null)
 
     const navigate = useNavigate()
 
@@ -41,7 +43,8 @@ const JournalWrite = () => {
         axios.post('http://localhost:8080/create-journal', {
             title: title,
             entry_text: journalEntryText,
-            date_time: todaysDate.toISOString()
+            date_time: todaysDate.toISOString(),
+            emotion: (!!emotion ? emotion : '') // empty string if emotion is null
         })
             .then(function (response) {
                 navigate(`/view-journals/${response.data.id}`)
@@ -52,19 +55,27 @@ const JournalWrite = () => {
             })
     }
 
-    return (<div>
-        <h1>Journal</h1>
+    return <div>
+        <h1>Write Journal</h1>
+
         <h2>{
             todaysDate.toLocaleString('en-US', {
                 year: 'numeric', month: 'long', day: 'numeric'
             })
         }</h2>
-        <input type="title" value={title} onChange={(newTitle) => setTitle(newTitle.target.value)} className="title-textbox" placeholder="Enter a title" />
-        <Slate editor={editor} initialValue={entry} onChange={newEntryValue => setEntry(newEntryValue)}>
+
+        <input className="title-textbox" type="title" value={title} onChange={(newTitle) => setTitle(newTitle.target.value)} placeholder="Enter a title" />
+
+        <Slate editor={editor} initialValue={entry} onChange={(newEntryValue) => setEntry(newEntryValue)}>
             <Editable className="journal-textbox" placeholder="Today I am feeling..." />
         </Slate>
-        <button type="button" className="submit-button" onClick={submitJournal} >Submit</button>
-    </div>)
+
+        <div className="emotion-dropdown">
+            <EmotionDropdown onOptionSelect={(emotion) => { setEmotion(emotion) }} />
+        </div>
+
+        <button className="submit-button" type="button" onClick={submitJournal} >Submit</button>
+    </div>
 }
 
 

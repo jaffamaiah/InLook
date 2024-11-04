@@ -55,13 +55,13 @@
 .sidebar-defocus-area {
     height: 0;
     width: 100vw;
-    background-color:black;
+    background-color: black;
     opacity: 0.4;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.sidebar-defocus-area.open{
+.sidebar-defocus-area.open {
     height: 200vh;
 }

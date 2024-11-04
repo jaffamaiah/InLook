@@ -1,52 +1,52 @@
 import React, { useState } from "react"
 
 import "./NavBar.css"
+import { pages } from "../Constants"
 
 const NavBar = () => {
 
-  const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
+    const toggleSidebar = () => {
+        setIsOpen(!isOpen);
+    };
 
-  return (<div>
-    
-    <div className={`sidebar-defocus-area ${isOpen ? 'open' : ''}`} onClick={toggleSidebar} />
+    return <div>
 
-    <nav className="navbar">
-      <div className="navbar-left">
-        <button className='toggle-button' onClick={toggleSidebar}>Sidebar</button>
-      </div>
-      <div className="navbar-center">
-        <a href="/" className="logo">
-          InLook
-        </a>
-      </div>
-      <div className="navbar-right" />
-    </nav>
+        <div className={`sidebar-defocus-area ${isOpen ? 'open' : ''}`} onClick={toggleSidebar} />
 
-    <nav className={`sidebar ${isOpen ? 'open' : ''}`}>
-      <ul className="nav-links">
-        <li>
-          <a href="/">Home</a>
-        </li>
-        <li>
-          <a href="/login">Login</a>
-        </li> 
-        <li>
-          <a href="/signup">Signup</a>
-        </li> 
-        <li>
-          <a href="/journal">JournalWrite</a>
-        </li>
-        <li>
-          <a href="/view-journals">JournalView</a>
-        </li>
-      </ul>
-    </nav>
-    
-  </div>)
+        <nav className="navbar">
+            <div className="navbar-left">
+                <img src="/hamburger-menu.png" alt="Logo" className='toggle-button' onClick={toggleSidebar} />
+                {/* 
+                Icon by HideMaru
+                "https://www.freepik.com/icon/settings_13895453#fromView=search&page=1&position=5&uuid=47877187-26c6-4a38-bee1-2f315e7ef351"
+                */}
+            </div>
+            <div className="navbar-center">
+                <a href="/" className="logo">
+                    InLook
+                </a>
+            </div>
+            <div className="navbar-right" />
+        </nav>
+
+        <nav className={`sidebar ${isOpen ? 'open' : ''}`}>
+            <ul className="nav-links">
+                {
+                    Object.entries(pages).map(([pageName, pageData]) => (
+                        pageData.sidebar ?
+                            <li key={pageName}>
+                                <a href={pageData.path}>{pageData.name}</a>
+                            </li>
+                            :
+                            <></>
+                    ))
+                }
+            </ul>
+        </nav>
+
+    </div>
 }
 
 export default NavBar
