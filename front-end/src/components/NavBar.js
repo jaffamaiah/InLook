@@ -33,9 +33,12 @@ const NavBar = () => {
         </li>
         <li>
           <a href="/login">Login</a>
+        </li> 
+        <li>
+          <a href="/journal">JournalWrite</a>
         </li>
         <li>
-          <a href="/journal">Journal</a>
+          <a href="/view-journals">JournalView</a>
         </li>
       </ul>
     </nav>

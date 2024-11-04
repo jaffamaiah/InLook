@@ -8,18 +8,20 @@ from datetime import datetime
 import logging
 
 # ==================== CONFIGURATION ====================
+# Flask
 app = Flask(__name__)
 app.config.from_object(DevConfig)
 CORS(app, supports_credentials=True)
 
+# Logging
 try:
     open(file='./flask-server/app.log', mode="w").close()
     logging.basicConfig(filename='./flask-server/app.log', level=logging.DEBUG)
 except FileNotFoundError:
     open(file='./app.log', mode="w").close()
     logging.basicConfig(filename='./app.log', level=logging.DEBUG)
-    
 
+# SQLAlchemy
 db.init_app(app)
 api = Api(app,doc='/docs')
 journal_model=api.model(
@@ -34,38 +36,37 @@ journal_model=api.model(
 
 
 # ==================== JOURNAL ENDPOINTS ====================
-@api.route('/journals')
-class JournalsResource(Resource):
-    @api.marshal_list_with(journal_model)
-    def get(self):
-        """Get all Journals"""
-        journals=Journal.query.all()
-        return journals
-    @api.marshal_with(journal_model)    
-    def post(self):
-        """create new Journal"""
-        data=request.get_json()
-        new_journal=Journal(
-            title=data.get('title'),
-            entry_text=data.get('entry_text'),
-            date='',  # TODO
-            emotion=''  # TODO
-        )
-        new_journal.save()
-        return new_journal, 201
+@app.route("/create-journal", methods=["POST"])
+@api.marshal_with(journal_model)
+def create_journal():
+    data=request.get_json()
+    new_journal=Journal(
+        title=data.get('title'),
+        entry_text=data.get('entry_text'),
+        date='',  # TODO
+        emotion=''  # TODO
+    )
+    new_journal.save()
+    return new_journal, 201
 
-#get journal by ID
+@app.route("/get-all-journals", methods=["GET"])
+@api.marshal_with(journal_model)
+def get_all_journals():
+    journals=Journal.query.all()
+    return journals
+
+# Single Journal by ID
 @api.route('/journal/<int:id>')
 class JournalResource(Resource):
     @api.marshal_with(journal_model)
     def get(self,id):
-        """Get Journal by ID"""
+        """Get Journal"""
         journal=Journal.query.get_or_404(id)
         return journal
     
     @api.marshal_with(journal_model)
     def put(self,id):
-        """update a journal by ID"""
+        """Update Journal"""
         journal_to_update=Journal.query.get_or_404(id)
         data=request.get_json()
         journal_to_update.update(data.get('title'), data.get('entry_text'))
@@ -73,11 +74,11 @@ class JournalResource(Resource):
     
     @api.marshal_with(journal_model)
     def delete(self,id):
-       """Delete a journal by ID"""
+       """Delete Journal"""
        journal_to_delete=Journal.query.get_or_404(id)
        journal_to_delete.delete()
        return journal_to_delete
-
+    
 
 @app.shell_context_processor
 def make_shell_context():
@@ -125,9 +126,9 @@ def login_user():
 #     }, 200
 
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def catch_all(path):
+# ==================== HEALTH-CHECK ENDPOINT ====================
+@app.route("/health")
+def health_check():
     return 'OK', 200
 
 # ==================== LAUNCH ====================

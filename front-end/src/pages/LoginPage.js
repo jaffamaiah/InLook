@@ -20,12 +20,15 @@ export default function LoginPage() {
       password: password
     })
       .then((response) => {
-        console.log(response.data)
         navigate("/")
       })
       .catch((error) => {
-        console.log(error, 'error')
-        alert(error.response.data.msg)
+        if(error.status === 401) {
+          alert(error.response.data.msg)
+        } else {
+          alert("Error has ocurred")
+          console.log(error)
+        }
       })
   }
 

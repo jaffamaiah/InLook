@@ -5,8 +5,10 @@ import "./App.css"
 
 import Home from "./pages/Home"
 import LoginPage from "./pages/LoginPage"
-import JournalEntry from "./pages/JournalEntry"
+import JournalWrite from "./pages/JournalWrite"
+import JournalView from "./pages/JournalView"
 import Page404 from "./pages/Page404"
+import AllJournals from "./pages/AllJournals"
 
 export default function App() {
   return <div>
@@ -15,13 +17,15 @@ export default function App() {
         <Routes>
           <Route index element={<Home />} />
           <Route path="login" element={<LoginPage />} />
-          <Route path="journal" element={<JournalEntry />} />
+          <Route path="journal" element={<JournalWrite />} />
+          <Route path="view-journals" element={<AllJournals />} />
+          <Route path="view-journals/:id" element={<JournalView />} />
           <Route path="*" element={<Page404 />} />
         </Routes>
       </BrowserRouter>
     </div>
     <div className='navbar'>
-      <NavBar/>
+      <NavBar />
     </div>
   </div>
 }
