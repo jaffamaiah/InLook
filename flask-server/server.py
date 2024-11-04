@@ -57,7 +57,7 @@ def create_journal():
         title=data.get('title'),
         entry_text=data.get('entry_text'),
         date=formatted_date,
-        emotion=''  # TODO
+        emotion=data.get('emotion')
     )
     new_journal.save()
     return new_journal, 201
