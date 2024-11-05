@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
-import Home from "./pages/Home"
-import LogIn from "./pages/LogIn"
-import SignUp from "./pages/SignUp"
-import JournalWrite from "./pages/JournalWrite"
-import AllJournals from "./pages/AllJournals"
-import JournalView from "./pages/JournalView"
-import Page404 from "./pages/Page404"
+import Home from './pages/Home'
+import LogIn from './pages/LogIn'
+import SignUp from './pages/SignUp'
+import JournalWrite from './pages/JournalWrite'
+import AllJournals from './pages/AllJournals'
+import JournalView from './pages/JournalView'
+import Page404 from './pages/Page404'
 
 
 export const emotions = {

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
-import { emotions } from "../Constants"
+import { emotions } from '../Constants'
 
 function EmotionDropdown({ onOptionSelect }) {
-    const [selectedOption, setSelectedOption] = useState("");
+    const [selectedOption, setSelectedOption] = useState('')
 
     const handleOptionSelect = (event) => {
         setSelectedOption(event.target.value)
@@ -15,7 +15,7 @@ function EmotionDropdown({ onOptionSelect }) {
             width: '150px'
         }}>
             {!selectedOption &&
-                <option value="">Tag an Emotion</option>
+                <option value=''>Tag an Emotion</option>
             }
             {
                 Object.entries(emotions).map(([emotionName, emotionProperties]) => (
@@ -39,4 +39,4 @@ function EmotionDropdown({ onOptionSelect }) {
     </div>
 }
 
-export default EmotionDropdown;
+export default EmotionDropdown
