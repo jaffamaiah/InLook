@@ -1,6 +1,22 @@
+.title-textbox {
+    width: 90vw;
+    padding: 5px;
+    font-size: 20px;
+    margin: 5px;
+}
+
 .journal-textbox {
+    width: 90vw;
     border: 2px solid #525252;
     color: black;
-    padding: 10px;
-    overflow-y: auto;
+    padding: 5px;
+    margin: 5px;
+}
+
+.emotion-dropdown {
+    margin: 5px;
+}
+
+.submit-button {
+    margin: 5px;
 }

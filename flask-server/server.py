@@ -1,17 +1,26 @@
-from flask import Flask, jsonify, request, redirect, url_for, request
+from flask import Flask, jsonify, request
 from flask_restx import Api, Resource, fields
 from flask_cors import CORS
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import JWTManager
 from config import DevConfig
 from models import Journal
 from exts import db
 from datetime import datetime
 import logging
+import os
 
 # ==================== CONFIGURATION ====================
 # Flask
 app = Flask(__name__)
 app.config.from_object(DevConfig)
 CORS(app, supports_credentials=True)
+
+# Flask-JWT-Extended
+app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET')
+jwt = JWTManager(app)
 
 # Logging
 try:
@@ -39,12 +48,16 @@ journal_model=api.model(
 @app.route("/create-journal", methods=["POST"])
 @api.marshal_with(journal_model)
 def create_journal():
-    data=request.get_json()
+    data = request.get_json()
+    # formatting date time string to mm-dd-yyyy
+    date_time_string = data.get('date_time')
+    dt = datetime.strptime(date_time_string, "%Y-%m-%dT%H:%M:%S.%fZ")
+    formatted_date = dt.strftime("%m-%d-%Y")
     new_journal=Journal(
         title=data.get('title'),
         entry_text=data.get('entry_text'),
-        date='',  # TODO
-        emotion=''  # TODO
+        date=formatted_date,
+        emotion=data.get('emotion')
     )
     new_journal.save()
     return new_journal, 201
@@ -90,42 +103,17 @@ def make_shell_context():
 
 # ==================== LOGIN ENDPOINTS ====================
 @app.route("/login", methods=["POST"])
-def login_user():
+def create_token():
     username = request.json.get("username")
     password = request.json.get("password")
     
+    # Add your user authentication logic here (searching database for a match)
     if username == 'admin' and password == 'admin':
-        return {
-            "msg": "Login successful",
-            "redirect": "/"
-        }, 200
+        access_token = create_access_token(identity=username)
+        return jsonify(access_token=access_token), 200
     else:
-        return {
-            "msg": "Wrong username or password"
-        }, 401
-
-
-# # Members API Route
-# @app.route("/journal_submit", methods=["POST"])
-# def journal_submit():
-#     title = request.json.get("title")
-#     entry_text = request.json.get("entry_text")
-#     date_time = request.json.get("date_time") # date_time is the datetime string from the frontend, while date is just the date in the desired format
-
-#     # get date and put into mm/dd/yyyy format
-#     date_time = date_time.strptime(date_time, "%Y-%m-%dT%H:%M:%S.%fZ")
-#     date = date_time.strftime("%m") + "/" + date_time.strftime("%d") + "/" + date_time.strftime("%Y")
-
-#     # # log values stored in journal object
-#     app.logger.info('Journal title: %s', title)
-#     app.logger.info('Journal entry text: %s', entry_text)
-#     app.logger.info('Journal date: %s', date)
+        return jsonify(msg="Wrong username or password"), 401
     
-#     return {
-#         "msg": "Journal created"
-#     }, 200
-
-
 # ==================== HEALTH-CHECK ENDPOINT ====================
 @app.route("/health")
 def health_check():
