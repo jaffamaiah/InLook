@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, redirect, url_for, request
 from flask_restx import Api, Resource, fields
+from flask_migrate import Migrate
 from flask_cors import CORS
 from config import DevConfig
 from models import Journal
@@ -23,6 +24,9 @@ except FileNotFoundError:
 
 # SQLAlchemy
 db.init_app(app)
+
+migrate = Migrate(app, db)
+
 api = Api(app,doc='/docs')
 journal_model=api.model(
     "journals", {

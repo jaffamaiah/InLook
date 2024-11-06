@@ -26,3 +26,19 @@ class Journal(db.Model):
         self.title = title
         self.entry_text = entry_text
         db.session.commit()
+
+
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(25), nullable=False, unique=True)
+    email = db.Column(db.String(80), nullable=False)
+    password = db.Column(db.Text(), nullable=False)
+
+    def __repr__(self):
+        """returns string rep of object """
+        return f"<User {self.username}>"
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
