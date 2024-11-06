@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
 import JournalIcon from '../components/JournalIcon'
-import "./AllJournals.css"
+import { pages } from '../Constants'
+import './AllJournals.css'
 
 
 const AllJournals = () => {
@@ -15,7 +16,7 @@ const AllJournals = () => {
                 setjournalEntries(response.data)
             })
             .catch((error) => {
-                setError(`Journals not found!`)
+                setError('Journals not found!')
                 console.log(error)
             })
     }, [])
@@ -24,9 +25,13 @@ const AllJournals = () => {
         <h1>All Journals</h1>
         {error && <h2>{error}</h2>}
         {journalEntries && (
-            <div className="journal-grid">{
+            <div className='journal-grid'>{
                 journalEntries.map(journal => (
-                    <JournalIcon id={journal.id} title={journal.title} date={journal.date} />
+                    <JournalIcon
+                        path={pages.AllJournals.path + `/${journal.id}`}
+                        title={journal.title}
+                        date={journal.date}
+                    />
                 ))
             }</div>
         )}

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
-import { Slate, Editable } from 'slate-react';
-import { createEditor } from 'slate';
+import { Slate, Editable } from 'slate-react'
+import { createEditor } from 'slate'
 
 const JournalView = () => {
-    const { id } = useParams();
+    const { id } = useParams()
 
     const [journalData, setJournalData] = useState(null)
     const [error, setError] = useState(null)
@@ -14,7 +14,7 @@ const JournalView = () => {
         axios.get(`http://localhost:8080/journal/${id}`)
             .then((response) => {
                 let slateEntry = []
-                response.data["entry_text"].split("\n").forEach((line) => {
+                response.data['entry_text'].split('\n').forEach((line) => {
                     slateEntry.push(
                         {
                             type: 'paragraph',
@@ -24,14 +24,14 @@ const JournalView = () => {
                 })
                 setJournalData(
                     {
-                        "title": response.data.title,
-                        "date": response.data.date,
-                        "entry": slateEntry
+                        'title': response.data.title,
+                        'date': response.data.date,
+                        'entry': slateEntry
                     }
                 )
             })
             .catch((error) => {
-                if (error["status"] === 404) {
+                if (error['status'] === 404) {
                     setError(`Error: Journal with ID ${id} not found!`)
                 } else {
                     console.log(error)

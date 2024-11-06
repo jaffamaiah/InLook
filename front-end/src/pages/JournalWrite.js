@@ -1,12 +1,13 @@
-import React, { useMemo, useState } from 'react';
-import { Slate, Editable, withReact } from 'slate-react';
-import { withHistory } from 'slate-history';
-import { createEditor } from 'slate';
-import { useNavigate } from "react-router-dom"
+import React, { useMemo, useState } from 'react'
+import { Slate, Editable, withReact } from 'slate-react'
+import { withHistory } from 'slate-history'
+import { createEditor } from 'slate'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
-import EmotionDropdown from "../components/EmotionDropdown"
-import "./JournalWrite.css"
+import EmotionDropdown from '../components/EmotionDropdown'
+import { pages } from '../Constants'
+import './JournalWrite.css'
 
 const initialEntry = [
     {
@@ -19,7 +20,7 @@ const todaysDate = new Date()
 
 const JournalWrite = () => {
 
-    const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+    const editor = useMemo(() => withHistory(withReact(createEditor())), [])
     const [entry, setEntry] = useState(initialEntry)
     const [title, setTitle] = useState('')
     const [emotion, setEmotion] = useState(null)
@@ -27,9 +28,9 @@ const JournalWrite = () => {
     const navigate = useNavigate()
 
     function getEntryText() {
-        let entryText = entry[0]["children"][0]["text"]
+        let entryText = entry[0]['children'][0]['text']
         for (let i = 1; i < entry.length; i++) {
-            entryText += "\n" + entry[i]["children"][0]["text"]
+            entryText += '\n' + entry[i]['children'][0]['text']
         }
         return entryText
     }
@@ -37,9 +38,9 @@ const JournalWrite = () => {
     const submitJournal = () => {
         const journalEntryText = getEntryText()
         if (title.length === 0)
-            return alert("Title has been left blank!")
+            return alert('Title has been left blank!')
         if (journalEntryText.length === 0)
-            return alert("Journal has been left blank!")
+            return alert('Journal has been left blank!')
         axios.post('http://localhost:8080/create-journal', {
             title: title,
             entry_text: journalEntryText,
@@ -47,11 +48,11 @@ const JournalWrite = () => {
             emotion: (!!emotion ? emotion : '') // empty string if emotion is null
         })
             .then(function (response) {
-                navigate(`/view-journals/${response.data.id}`)
+                navigate(pages.AllJournals.path + `/${response.data.id}`)
             })
             .catch(function (error) {
                 console.log(error)
-                alert("Invalid journal")
+                alert('Invalid journal')
             })
     }
 
@@ -64,17 +65,17 @@ const JournalWrite = () => {
             })
         }</h2>
 
-        <input className="title-textbox" type="title" value={title} onChange={(newTitle) => setTitle(newTitle.target.value)} placeholder="Enter a title" />
+        <input className='title-textbox' type='title' value={title} onChange={(newTitle) => setTitle(newTitle.target.value)} placeholder='Enter a title' />
 
         <Slate editor={editor} initialValue={entry} onChange={(newEntryValue) => setEntry(newEntryValue)}>
-            <Editable className="journal-textbox" placeholder="Today I am feeling..." />
+            <Editable className='journal-textbox' placeholder='Today I am feeling...' />
         </Slate>
 
-        <div className="emotion-dropdown">
+        <div className='emotion-dropdown'>
             <EmotionDropdown onOptionSelect={(emotion) => { setEmotion(emotion) }} />
         </div>
 
-        <button className="submit-button" type="button" onClick={submitJournal} >Submit</button>
+        <button className='submit-button' type='button' onClick={submitJournal} >Submit</button>
     </div>
 }
 

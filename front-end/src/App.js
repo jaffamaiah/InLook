@@ -1,8 +1,8 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-import NavBar from "./components/NavBar"
-import { pages } from "./Constants"
-import "./App.css"
+import NavBar from './components/NavBar'
+import { pages } from './Constants'
+import './App.css'
 
 
 export default function App() {
