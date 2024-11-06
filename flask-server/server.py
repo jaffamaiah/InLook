@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, redirect, url_for, request
+from flask import Flask, jsonify, request
 from flask_restx import Api, Resource, fields
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token
@@ -102,21 +102,6 @@ def make_shell_context():
 
 
 # ==================== LOGIN ENDPOINTS ====================
-# @app.route("/login", methods=["POST"])
-# def login_user():
-#     username = request.json.get("username")
-#     password = request.json.get("password")
-    
-#     if username == 'admin' and password == 'admin':
-#         return {
-#             "msg": "Login successful",
-#             "redirect": "/"
-#         }, 200
-#     else:
-#         return {
-#             "msg": "Wrong username or password"
-#         }, 401
-    
 @app.route("/login", methods=["POST"])
 def create_token():
     username = request.json.get("username")
