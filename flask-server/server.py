@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_cors import CORS
 from config import DevConfig
 from models import Journal
+from models import User
 from exts import db
 from datetime import datetime
 import logging
@@ -38,6 +39,14 @@ journal_model=api.model(
     }
 )
 
+user_model=api.model(
+    "user", {
+        "id":fields.Integer(),
+        "username":fields.String(),
+        "email":fields.String(),
+        "password":fields.String(),
+    }
+)
 
 # ==================== JOURNAL ENDPOINTS ====================
 @app.route("/create-journal", methods=["POST"])
@@ -92,43 +101,31 @@ def make_shell_context():
     }
 
 
-# ==================== LOGIN ENDPOINTS ====================
+# ==================== LOGIN ENDPOINT ====================
 @app.route("/login", methods=["POST"])
+@api.marshal_with(user_model)
 def login_user():
-    username = request.json.get("username")
+    email = request.json.get("email")
     password = request.json.get("password")
-    
-    if username == 'admin' and password == 'admin':
-        return {
+
+    user = User.query.get('email')
+    if user:
+        if user.__repr__().find(password) != -1:
+            # Authentication token # TODO
+            return {
             "msg": "Login successful",
             "redirect": "/"
-        }, 200
+            }, 200
+        else:
+            return {
+            "msg": "Incorrect password"
+            }, 401
     else:
         return {
-            "msg": "Wrong username or password"
+            "msg": "No such user!"
         }, 401
 
-
-# # Members API Route
-# @app.route("/journal_submit", methods=["POST"])
-# def journal_submit():
-#     title = request.json.get("title")
-#     entry_text = request.json.get("entry_text")
-#     date_time = request.json.get("date_time") # date_time is the datetime string from the frontend, while date is just the date in the desired format
-
-#     # get date and put into mm/dd/yyyy format
-#     date_time = date_time.strptime(date_time, "%Y-%m-%dT%H:%M:%S.%fZ")
-#     date = date_time.strftime("%m") + "/" + date_time.strftime("%d") + "/" + date_time.strftime("%Y")
-
-#     # # log values stored in journal object
-#     app.logger.info('Journal title: %s', title)
-#     app.logger.info('Journal entry text: %s', entry_text)
-#     app.logger.info('Journal date: %s', date)
-    
-#     return {
-#         "msg": "Journal created"
-#     }, 200
-
+# ==================== SIGN-UP ENDPOINT ====================
 
 # ==================== HEALTH-CHECK ENDPOINT ====================
 @app.route("/health")

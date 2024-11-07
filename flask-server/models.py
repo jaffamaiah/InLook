@@ -33,11 +33,11 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(25), nullable=False, unique=True)
     email = db.Column(db.String(80), nullable=False)
-    password = db.Column(db.Text(), nullable=False)
+    password = db.Column(db.String(30), nullable=False)
 
     def __repr__(self):
-        """returns string rep of object """
-        return f"<User {self.username}>"
+        """returns string rep of object - password """
+        return f"<User {self.password}>"
 
     def save(self):
         db.session.add(self)
