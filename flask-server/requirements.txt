@@ -30,3 +30,4 @@ SQLAlchemy==2.0.36
 typing_extensions==4.12.2
 virtualenv==20.27.0
 Werkzeug==3.0.4
+pyopenssl==24.2.1
