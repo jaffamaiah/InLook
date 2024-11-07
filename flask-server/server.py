@@ -1,16 +1,16 @@
-from flask import Flask, jsonify, request
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, set_access_cookies
 from flask_restx import Api, Resource, fields
 from flask_cors import CORS
-from flask_jwt_extended import create_access_token
-from flask_jwt_extended import get_jwt_identity
-from flask_jwt_extended import jwt_required
-from flask_jwt_extended import JWTManager
+from flask import Flask, jsonify, request
+
+from datetime import datetime
 from config import DevConfig
 from models import Journal
 from exts import db
-from datetime import datetime
+
 import logging
 import os
+
 
 # ==================== CONFIGURATION ====================
 # Flask
@@ -19,7 +19,10 @@ app.config.from_object(DevConfig)
 CORS(app, supports_credentials=True)
 
 # Flask-JWT-Extended
-app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET')
+app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET')  # Set JWT Secret
+app.config['JWT_TOKEN_LOCATION'] = ['cookies']  # Set token location to cookies
+app.config['JWT_COOKIE_SECURE'] = True  # Set cookie to be secure
+app.config['JWT_COOKIE_HTTP_ONLY'] = True  # Set cookie to be HTTP-only
 jwt = JWTManager(app)
 
 # Logging
@@ -101,7 +104,7 @@ def make_shell_context():
     }
 
 
-# ==================== LOGIN ENDPOINTS ====================
+# ==================== LOG-IN ENDPOINTS ====================
 @app.route("/login", methods=["POST"])
 def create_token():
     username = request.json.get("username")
@@ -110,14 +113,28 @@ def create_token():
     # Add your user authentication logic here (searching database for a match)
     if username == 'admin' and password == 'admin':
         access_token = create_access_token(identity=username)
-        return jsonify(access_token=access_token), 200
+        resp = jsonify(message='Login successful')
+        set_access_cookies(resp, access_token)
+        return resp
     else:
         return jsonify(msg="Wrong username or password"), 401
-    
+
+
+@app.route('/protected', methods=['GET'])
+@jwt_required(optional=True)
+def protected():
+    current_user = get_jwt_identity()
+    if current_user is None:
+        return jsonify(message=f'Not signed in'), 401
+
+    return jsonify(message=f'Hello, {current_user}!'), 200
+
+
 # ==================== HEALTH-CHECK ENDPOINT ====================
 @app.route("/health")
 def health_check():
     return 'OK', 200
+
 
 # ==================== LAUNCH ====================
 if __name__ == "__main__":

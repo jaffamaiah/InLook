@@ -1,37 +1,35 @@
 import React, { useState } from 'react'
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
-
-import { pages } from '../Constants'
+import { axiosClient } from '../utilities';
 
 export default function LogIn() {
-
+    
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
-    const navigate = useNavigate()
+    const testAccess = async () => {
+        try {
+            const response = await axiosClient.get('http://localhost:8080/protected');
+            console.log(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
-    const logInUser = () => {
+    const logInUser = async () => {
         if (username.length === 0)
             return alert('Username has been left blank!')
         if (password.length === 0)
             return alert('Password has been left blank!')
 
-        axios.post('http://localhost:8080/login', {
-            username: username,
-            password: password
-        })
-            .then((response) => {
-                navigate(pages.Home.path)
+        try {
+            await axiosClient.post('http://localhost:8080/login', {
+                username: username,
+                password: password
             })
-            .catch((error) => {
-                if (error.status === 401) {
-                    alert(error.response.data.msg)
-                } else {
-                    alert('Error has ocurred')
-                    console.log(error)
-                }
-            })
+        } catch (error) {
+            console.error(error);
+        }
+
     }
 
 
@@ -49,6 +47,7 @@ export default function LogIn() {
             </div>
 
             <button type='button' onClick={logInUser} >Log In</button>
+            <button type='button' onClick={testAccess} >Test Access</button>
         </form>
     </div>
 }
