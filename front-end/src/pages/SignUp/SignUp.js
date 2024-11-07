@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
-import { pages } from '../Constants'
+import { pages } from '../../utilities'
 
 export default function SignUp() {
 

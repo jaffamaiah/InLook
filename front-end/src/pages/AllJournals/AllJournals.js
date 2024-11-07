@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
-import JournalIcon from '../components/JournalIcon'
-import { pages } from '../Constants'
+import { JournalIcon } from '../../components'
+import { pages } from '../../utilities'
 import './AllJournals.css'
 
 

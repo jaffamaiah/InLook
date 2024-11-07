@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import './NavBar.css'
-import { pages } from '../Constants'
+import { pages } from '../../utilities'
 
 const NavBar = () => {
 

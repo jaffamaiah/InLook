@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { emotions } from '../Constants'
+import { emotions } from '../../utilities'
 
 function EmotionDropdown({ onOptionSelect }) {
     const [selectedOption, setSelectedOption] = useState('')

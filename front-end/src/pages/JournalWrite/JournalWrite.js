@@ -5,8 +5,8 @@ import { createEditor } from 'slate'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
-import EmotionDropdown from '../components/EmotionDropdown'
-import { pages } from '../Constants'
+import { EmotionDropdown } from '../../components'
+import { pages } from '../../utilities'
 import './JournalWrite.css'
 
 const initialEntry = [

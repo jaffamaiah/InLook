@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { axiosClient } from '../utilities';
+import { axiosClient } from '../../utilities';
 
 export default function LogIn() {
     
