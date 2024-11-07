@@ -1,5 +1,6 @@
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, set_access_cookies
 from flask_restx import Api, Resource, fields
+from flask_migrate import Migrate
 from flask_cors import CORS
 from flask import Flask, jsonify, request
 
@@ -35,6 +36,9 @@ except FileNotFoundError:
 
 # SQLAlchemy
 db.init_app(app)
+
+migrate = Migrate(app, db)
+
 api = Api(app,doc='/docs')
 journal_model=api.model(
     "journals", {
