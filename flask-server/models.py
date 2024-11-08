@@ -7,7 +7,6 @@ class Journal(db.Model):
     entry_text = db.Column(db.String, nullable=False)
     emotion = db.Column(db.String, nullable=False)
     date = db.Column(db.String, default=db.func.now())  # You can define a default value
-    
 
     # Methods
     def __repr__(self):
@@ -41,5 +40,6 @@ class User(db.Model):
         return f"<User {self.password}>"
 
     def save(self):
+        db.create_all()
         db.session.add(self)
         db.session.commit()
