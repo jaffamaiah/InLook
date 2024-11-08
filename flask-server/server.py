@@ -154,13 +154,12 @@ def signup_user():
         
         data = request.get_json()
         new_user = User(
-            email=data.get('email'),
             username=data.get('username'),
+            email=data.get('email'),
             password=data.get('password')
         )
 
-        # crashes when adding user to database
-        new_user.save() # TODO
+        new_user.save()
 
         return new_user, 201
 
