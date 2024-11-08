@@ -1,67 +1,93 @@
-/* TOP NAVBAR */
-.navbar {
-    height: 10vh;
-    width: 100vw;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #333;
-    color: #fff;
-    position: fixed;
-    top: 0;
-}
-
-.toggle-button {
-    float: right;
-    width: 5vw;
-    position: relative;
-    left: 1vh;
-}
-
-.logo {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #fff;
-    text-decoration: none;
-}
-
-/* SIDEBAR */
 .sidebar {
-    height: 90vh;
-    width: 20vw;
-    position: fixed;
-    left: -20vw;
-    bottom: 0px;
-    transition: left 0.3s ease-in-out;
-    background-color: #555;
+    background-color: #f4f5f7;
+    height: 100%;
+    width: 20%;
+    left: -25vw;
+    position: absolute;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 45px;
+    transition: left 0.4s ease-in-out;
 }
 
 .sidebar.open {
     left: 0px;
 }
 
+
+
+.x {
+    height: 3vw;
+    padding: 0px;
+    border-style: hidden;
+    outline: none;
+    right: 10px;
+    top: 10px;
+    position: absolute;
+}
+
+
+
+.profile-section {
+    height: 40vh;
+    display: grid;
+    place-items: center;
+}
+
+.profile-section img {
+    height: 15vw;
+}
+
+.profile-section div {
+    text-align: center;
+    font-size: 1.8vw;
+    position: absolute;
+    top: 33vh;
+}
+
+
+
 .nav-links {
-    list-style: none;
+    height: 55%;
+    bottom: 0;
+    position: absolute;
+    list-style-type: none;
+    padding: 0;
+}
+
+.nav-links img {
+    padding-left: 1vw;
+    padding-right: 1vw;
+    width: 3vw;
 }
 
 .nav-links a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1.5rem;
-}
-
-/* DEFOCUS AREA */
-.sidebar-defocus-area {
-    height: 0;
-    width: 100vw;
-    background-color: black;
-    opacity: 0.4;
     display: flex;
     align-items: center;
-    justify-content: center;
+    text-decoration: none;
+    color: #000000;
+    font-size: 1.7vw;
+    letter-spacing: 1px;
+    padding-bottom: 30px;
 }
 
-.sidebar-defocus-area.open {
-    height: 200vh;
+
+
+.logout {
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #000000;
+    font-size: 2vw;
+    letter-spacing: 1px;
+}
+
+.logout img {
+    padding: 10px;
+    width: 3vw;
 }

@@ -5,48 +5,59 @@ import { pages } from '../../utilities'
 
 const NavBar = () => {
 
-    const [isOpen, setIsOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState(true)
 
     const toggleSidebar = () => {
         setIsOpen(!isOpen)
     }
 
-    return <div>
+    return <>
 
-        <div className={`sidebar-defocus-area ${isOpen ? 'open' : ''}`} onClick={toggleSidebar} />
+        {/* <div className={`sidebar-defocus-area ${isOpen ? 'open' : ''}`} onClick={toggleSidebar} /> */}
 
-        <nav className='navbar'>
-            <div className='navbar-left'>
-                <img src='/hamburger-menu.png' alt='Logo' className='toggle-button' onClick={toggleSidebar} />
-                {/* 
-                Icon by HideMaru
-                'https://www.freepik.com/icon/settings_13895453#fromView=search&page=1&position=5&uuid=47877187-26c6-4a38-bee1-2f315e7ef351'
-                */}
-            </div>
-            <div className='navbar-center'>
-                <a href='/' className='logo'>
-                    InLook
-                </a>
-            </div>
-            <div className='navbar-right' />
-        </nav>
+        <nav id='sidebar' className={`sidebar ${isOpen ? 'open' : ''}`}>
+            <img id='x' className='x' src='/NavBar/X.svg' onClick={toggleSidebar} />
 
-        <nav className={`sidebar ${isOpen ? 'open' : ''}`}>
+            <a className='profile-section'>
+                <img id='account-circle' src='/NavBar/Account_Circle.svg' />
+                <div>My Profile</div>
+            </a>
+
             <ul className='nav-links'>
-                {
-                    Object.entries(pages).map(([pageName, pageData]) => (
-                        pageData.sidebar ?
-                            <li key={pageName}>
-                                <a href={pageData.path}>{pageData.name}</a>
-                            </li>
-                            :
-                            <></>
-                    ))
-                }
+                <li>
+                    <a id='writejournal'>
+                        <img id='edit' src='/NavBar/Edit.svg' />
+                        Write Journal
+                    </a>
+                </li>
+                <li>
+                    <a id='readjournal'>
+                        <img id='eye' src='/NavBar/Eye.svg' />
+                        Read Journal
+                    </a>
+                </li>
+                <li>
+                    <a id='emotions'>
+                        <img id='heart' src='/NavBar/Heart.svg' />
+                        Emotions
+                    </a>
+                </li>
+                <li>
+                    <a id='accountsettings' >
+                        <img id='settings' src='/NavBar/Settings.svg' />
+                        Account Settings
+                    </a>
+                </li>
             </ul>
+
+            <a id='logout' className='logout'>
+                Log Out
+                <img id='logout-icon' src='/NavBar/Log out.svg' />
+            </a>
+
         </nav>
 
-    </div>
+    </>
 }
 
 export default NavBar
