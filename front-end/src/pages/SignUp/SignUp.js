@@ -27,16 +27,15 @@ export default function SignUp() {
             password: password
         })
             .then((response) => {
-                console.log(response)
-                navigate(pages.Home.path)
-                alert('check console for response from server')
+                alert(response.data.msg)
             })
             .catch((error) => {
-                if (error.status === 401) {
+                // TODO: add a utility to handle errors more properly.
+                if (error.response) {
                     alert(error.response.data.msg)
                 } else {
-                    alert('Error has ocurred')
                     console.log(error)
+                    alert("Unexpected error has occurred. Check console")
                 }
             })
     }

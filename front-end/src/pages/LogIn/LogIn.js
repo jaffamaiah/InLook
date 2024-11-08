@@ -3,7 +3,7 @@ import { axiosClient } from '../../utilities';
 
 export default function LogIn() {
     
-    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
     const testAccess = async () => {
@@ -16,18 +16,24 @@ export default function LogIn() {
     };
 
     const logInUser = async () => {
-        if (username.length === 0)
-            return alert('Username has been left blank!')
+        if (email.length === 0)
+            return alert('Email has been left blank!')
         if (password.length === 0)
             return alert('Password has been left blank!')
 
         try {
-            await axiosClient.post('http://localhost:8080/login', {
-                username: username,
+            let response = await axiosClient.post('http://localhost:8080/login', {
+                email: email,
                 password: password
             })
+            alert(response.data.msg)
         } catch (error) {
-            console.error(error);
+            if (error.response) {
+                alert(error.response.data.msg)
+            } else {
+                console.log(error)
+                alert("Unexpected error has occurred. Check console")
+            }
         }
 
     }
@@ -37,8 +43,8 @@ export default function LogIn() {
         <h1>Log In</h1>
         <form>
             <div>
-                <input type='username' onChange={(e) => setUsername(e.target.value)} />
-                <label for='username'> Username</label>
+                <input type='email' onChange={(e) => setEmail(e.target.value)} />
+                <label for='email'> Email</label>
             </div>
 
             <div>
