@@ -6,8 +6,7 @@ from flask import Flask, jsonify, request
 
 from datetime import datetime
 from config import DevConfig
-from models import Journal
-from models import User
+from models import Journal, User
 from exts import db
 
 import logging
@@ -53,9 +52,8 @@ journal_model=api.model(
 
 user_model=api.model(
     "user", {
-        "id":fields.Integer(),
-        "username":fields.String(),
         "email":fields.String(),
+        "username":fields.String(),
         "password":fields.String(),
     }
 )
@@ -120,48 +118,49 @@ def make_shell_context():
 
 # ==================== LOGIN ENDPOINT ====================
 @app.route("/login", methods=["POST"])
-@api.marshal_with(user_model)
 def login_user():
     email = request.json.get("email")
     password = request.json.get("password")
 
-    user = User.query.get('email')
-    if user:
-        if user.__repr__().find(password) != -1:
-            access_token = create_access_token(identity=email)
-            response_json = jsonify(message='Login successful')
-            set_access_cookies(response_json, access_token)
-            return response_json, 200
-        else:
-            return jsonify(msg="Wrong password!"), 401
-    else:
+    user = User.query.get({'email':email})
+    if user is None:
         return jsonify(msg="User doesn't exist!"), 401
+    
+    if user.__repr__().find(password) != -1:
+        access_token = create_access_token(identity=email)
+        response_json = jsonify(msg='Login successful')
+        set_access_cookies(response_json, access_token)
+        return response_json, 200
+    else:
+        return jsonify(msg="Wrong password!"), 401
+        
 
 @app.route('/protected', methods=['GET'])
 @jwt_required(optional=True)
 def protected():
     current_user = get_jwt_identity()
     if current_user is None:
-        return jsonify(message=f'Not signed in'), 401
+        return jsonify(msg='Not signed in'), 401
 
-    return jsonify(message=f'Hello, {current_user}!'), 200
+    return jsonify(msg=('Hello, %s!' % current_user)), 200
 
 
 # ==================== SIGN-UP ENDPOINT ====================
 @app.route('/signup', methods=["POST"])
-@api.marshal_with(user_model)
 def signup_user():
-        
         data = request.get_json()
-        new_user = User(
-            username=data.get('username'),
-            email=data.get('email'),
-            password=data.get('password')
-        )
+        try:
+            new_user = User(
+                username=data.get('username'),
+                email=data.get('email'),
+                password=data.get('password')
+            )
+            new_user.save()
+        except:
+            return jsonify(msg="An account with that email already exists!"), 403
 
-        new_user.save()
 
-        return new_user, 201
+        return jsonify(msg=("Successfully created account with username \'%s\'" % data.get('username'))), 201
 
 
 # ==================== HEALTH-CHECK ENDPOINT ====================
