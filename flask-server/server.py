@@ -148,7 +148,21 @@ def protected():
 
 
 # ==================== SIGN-UP ENDPOINT ====================
+@app.route('/signup', methods=["POST"])
+@api.marshal_with(user_model)
+def signup_user():
+        
+        data = request.get_json()
+        new_user = User(
+            email=data.get('email'),
+            username=data.get('username'),
+            password=data.get('password')
+        )
 
+        # crashes when adding user to database
+        new_user.save() # TODO
+
+        return new_user, 201
 
 
 # ==================== HEALTH-CHECK ENDPOINT ====================
