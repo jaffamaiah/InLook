@@ -1,21 +1,23 @@
 import React, { useState } from 'react'
-import { axiosClient } from '../../utilities';
+
+import { axiosClient, errorHandler } from '../../utilities'
+
 
 export default function LogIn() {
     
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const testAccess = async () => {
+    async function testAccess() {
         try {
-            const response = await axiosClient.get('http://localhost:8080/protected');
-            console.log(response.data);
+            let response = await axiosClient.get('http://localhost:8080/protected')
+            alert(response.data.msg)
         } catch (error) {
-            console.error(error);
+            errorHandler(error)
         }
-    };
+    }
 
-    const logInUser = async () => {
+    async function logInUser() {
         if (email.length === 0)
             return alert('Email has been left blank!')
         if (password.length === 0)
@@ -28,14 +30,8 @@ export default function LogIn() {
             })
             alert(response.data.msg)
         } catch (error) {
-            if (error.response) {
-                alert(error.response.data.msg)
-            } else {
-                console.log(error)
-                alert("Unexpected error has occurred. Check console")
-            }
+            errorHandler(error)
         }
-
     }
 
 

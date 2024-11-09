@@ -3,7 +3,8 @@ import React, { useState } from 'react'
 import './NavBar.css'
 import { pages } from '../../utilities'
 
-const NavBar = () => {
+
+export default function NavBar() {
 
     const [isOpen, setIsOpen] = useState(false)
 
@@ -24,29 +25,23 @@ const NavBar = () => {
                 */}
             </div>
             <div className='navbar-center'>
-                <a href='/' className='logo'>
-                    InLook
-                </a>
+                <a href='/' className='logo'>InLook</a>
             </div>
             <div className='navbar-right' />
         </nav>
 
         <nav className={`sidebar ${isOpen ? 'open' : ''}`}>
-            <ul className='nav-links'>
-                {
-                    Object.entries(pages).map(([pageName, pageData]) => (
-                        pageData.sidebar ?
-                            <li key={pageName}>
-                                <a href={pageData.path}>{pageData.name}</a>
-                            </li>
-                            :
-                            <></>
-                    ))
-                }
-            </ul>
+            <ul className='nav-links'>{
+                Object.entries(pages).map(([pageName, pageData]) => (
+                    pageData.sidebar ?
+                        <li key={pageName}>
+                            <a href={pageData.path}>{pageData.name}</a>
+                        </li>
+                        :
+                        <></>
+                ))
+            }</ul>
         </nav>
 
     </div>
 }
-
-export default NavBar

@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 
 import { emotions } from '../../utilities'
 
-function EmotionDropdown({ onOptionSelect }) {
+
+export default function EmotionDropdown({ onOptionSelect }) {
     const [selectedOption, setSelectedOption] = useState('')
 
     const handleOptionSelect = (event) => {
@@ -38,5 +39,3 @@ function EmotionDropdown({ onOptionSelect }) {
         }
     </div>
 }
-
-export default EmotionDropdown

@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
 
-import { pages } from '../../utilities'
+import { axiosClient, errorHandler } from '../../utilities'
+
 
 export default function SignUp() {
 
@@ -10,9 +9,7 @@ export default function SignUp() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
-    const navigate = useNavigate()
-
-    const signUpUser = () => {
+    const signUpUser = async () => {
         if (email.length === 0)
             return alert('Email has been left blank!')
         if (username.length === 0)
@@ -20,24 +17,16 @@ export default function SignUp() {
         if (password.length <= 8)
             return alert('Password must be at least 8 characters in length!')
 
-
-        axios.post('http://localhost:8080/signup', {
-            email: email,
-            username: username,
-            password: password
-        })
-            .then((response) => {
-                alert(response.data.msg)
+        try {
+            let response = await axiosClient.post('http://localhost:8080/signup', {
+                email: email,
+                username: username,
+                password: password
             })
-            .catch((error) => {
-                // TODO: add a utility to handle errors more properly.
-                if (error.response) {
-                    alert(error.response.data.msg)
-                } else {
-                    console.log(error)
-                    alert("Unexpected error has occurred. Check console")
-                }
-            })
+            alert(response.data.msg)
+        } catch (error) {
+            errorHandler(error)
+        }
     }
 
 

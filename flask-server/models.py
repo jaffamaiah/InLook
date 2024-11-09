@@ -13,7 +13,6 @@ class Journal(db.Model):
         return f"<Journal {self.title}>"
 
     def save(self):
-        db.create_all()
         db.session.add(self)
         db.session.commit()
 
@@ -39,6 +38,5 @@ class User(db.Model):
         return f"<User {self.password}>"
 
     def save(self):
-        db.create_all()
         db.session.add(self)
         db.session.commit()

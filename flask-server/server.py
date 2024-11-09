@@ -5,12 +5,12 @@ from flask_cors import CORS
 from flask import Flask, jsonify, request
 
 from datetime import datetime
+import logging
+import os
+
 from config import DevConfig
 from models import Journal, User
 from exts import db
-
-import logging
-import os
 
 
 # ==================== CONFIGURATION ====================
@@ -81,7 +81,11 @@ def create_journal():
 @api.marshal_with(journal_model)
 def get_all_journals():
     journals=Journal.query.all()
-    return journals
+    if journals == []:
+        return journals, 404
+    else:
+        return journals, 200
+
 
 # Single Journal by ID
 @api.route('/journal/<int:id>')
@@ -126,7 +130,7 @@ def login_user():
     if user is None:
         return jsonify(msg="User doesn't exist!"), 401
     
-    if user.__repr__().find(password) != -1:
+    if user.password == password:
         access_token = create_access_token(identity=email)
         response_json = jsonify(msg='Login successful')
         set_access_cookies(response_json, access_token)
@@ -136,7 +140,7 @@ def login_user():
         
 
 @app.route('/protected', methods=['GET'])
-@jwt_required(optional=True)
+@jwt_required()
 def protected():
     current_user = get_jwt_identity()
     if current_user is None:
@@ -159,8 +163,7 @@ def signup_user():
         except:
             return jsonify(msg="An account with that email already exists!"), 403
 
-
-        return jsonify(msg=("Successfully created account with username \'%s\'" % data.get('username'))), 201
+        return jsonify(msg=("Successfully created account with email \'%s\'" % data.get('email'))), 201
 
 
 # ==================== HEALTH-CHECK ENDPOINT ====================
@@ -170,5 +173,8 @@ def health_check():
 
 
 # ==================== LAUNCH ====================
+with app.app_context():
+    db.create_all()
+
 if __name__ == "__main__":
     app.run(debug=True, port=8080)
