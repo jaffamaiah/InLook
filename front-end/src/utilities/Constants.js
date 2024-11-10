@@ -22,42 +22,50 @@ export const pages = {
         name: 'Home',
         path: '/',
         component: <Home />,
-        sidebar: false,
     },
     LogIn: {
         name: 'Log In',
         path: '/login',
         component: <LogIn />,
-        sidebar: true,
     },
     SignUp: {
         name: 'Sign Up',
         path: '/signup',
         component: <SignUp />,
-        sidebar: true,
     },
     JournalWrite: {
         name: 'Write Journal',
         path: '/journal',
         component: <JournalWrite />,
-        sidebar: true,
     },
     AllJournals: {
-        name: 'View Journals',
+        name: 'Read Journals',
         path: '/view-journals',
         component: <AllJournals />,
-        sidebar: true,
     },
     JournalView: {
         name: 'View Journal',
         path: '/view-journals/:id',
         component: <JournalView />,
-        sidebar: false,
+    },
+    AccountSettings: {
+        name: 'Account Settings',
+        path: '/settings',
+        component: <div/>,
+    },
+    Profile: {
+        name: 'My Profile',
+        path: '/profile',
+        component: <div/>,
+    },
+    Emotions: {
+        name: 'Emotions',
+        path: '/emotions',
+        component: <div/>,
     },
     Page404: {
         name: '404 Page',
         path: '*',
         component: <Page404 />,
-        sidebar: false,
     },
 }
