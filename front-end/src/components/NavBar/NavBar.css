@@ -1,97 +1,94 @@
+/* TOPBAR */
+.topbar {
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    padding: 0.5vw;
+    width: 100vw;
+}
+
+.hamburger-menu {
+    height: 8vh;
+    padding-right: 2vw;
+}
+
+.logo {
+    height: 5vh;
+}
+
+.topbar-logout {
+    justify-self: flex-end;
+}
+
+
+
+/* SIDEBAR */
 .sidebar {
-    background-color: #f4f5f7;
+    position: absolute;
     height: 100%;
     width: 20%;
-    left: -25vw;
+    left: -21%;
     top: 0;
-    position: absolute;
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-    padding: 0px;
     display: flex;
     flex-direction: column;
-    gap: 45px;
+    justify-content: space-between;
+    background-color: #f4f5f7;
+    filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25));
     transition: left 0.4s ease-in-out;
 }
-
 .sidebar.open {
-    left: 0px;
+    left: 0;
 }
 
+
+.spacer {
+    flex-grow: 1
+}
 
 
 .x {
+    position: absolute;
     height: 3vw;
     padding: 0px;
-    border-style: hidden;
-    outline: none;
-    right: 10px;
-    top: 10px;
-    position: absolute;
+    align-self: flex-end;
 }
-
 
 
 .profile-section {
-    height: 40vh;
-    display: grid;
-    place-items: center;
-}
-
-.profile-section img {
-    height: 15vw;
-}
-
-.profile-section a {
+    align-self: center;
     text-align: center;
     font-size: 1.8vw;
-    position: absolute;
-    top: 33vh;
     text-decoration: none;
     color: #000000;
     letter-spacing: 1px;
 }
+.profile-section img {
+    width: min(30vh, 15vw);
+}
+
 
 
 
 .nav-links {
-    height: 55%;
-    bottom: 0;
-    position: absolute;
     list-style-type: none;
     padding: 0;
 }
-
 .nav-links img {
     padding-left: 1vw;
     padding-right: 1vw;
     width: 3vw;
 }
-
 .nav-links a {
     display: flex;
     align-items: center;
     text-decoration: none;
-    color: #000000;
+    color: black;
     font-size: 1.7vw;
-    letter-spacing: 1px;
+    letter-spacing: 0.05vw;
     padding-bottom: 30px;
 }
 
 
-
-.logout {
-    bottom: 0;
-    right: 0;
-    position: absolute;
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: #000000;
-    font-size: 2vw;
-    letter-spacing: 1px;
-}
-
-.logout img {
-    padding: 10px;
-    width: 3vw;
+.sidebar-logout {
+    align-self: flex-end;
 }

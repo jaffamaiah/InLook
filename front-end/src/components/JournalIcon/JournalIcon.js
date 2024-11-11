@@ -4,7 +4,7 @@ import './JournalIcon.css'
 
 
 
-const JournalIcon = (args) => {
+export default function JournalIcon(args) {
 
     const navigate = useNavigate()
 
@@ -19,5 +19,3 @@ const JournalIcon = (args) => {
         </div >
     )
 }
-
-export default JournalIcon
