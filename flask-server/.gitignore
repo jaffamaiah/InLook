@@ -2,3 +2,5 @@ venv
 __pycache__
 app.log
 dev.db
+Pipfile
+Pipfile.lock

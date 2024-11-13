@@ -1,16 +1,18 @@
-from flask import Flask, jsonify, request
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, set_access_cookies
 from flask_restx import Api, Resource, fields
+from flask_migrate import Migrate
 from flask_cors import CORS
-from flask_jwt_extended import create_access_token
-from flask_jwt_extended import get_jwt_identity
-from flask_jwt_extended import jwt_required
-from flask_jwt_extended import JWTManager
-from config import DevConfig
-from models import Journal
-from exts import db
+from flask import Flask, jsonify, request
+from werkzeug.security import generate_password_hash, check_password_hash
+
 from datetime import datetime
 import logging
 import os
+
+from config import DevConfig
+from models import Journal, User
+from exts import db
+
 
 # ==================== CONFIGURATION ====================
 # Flask
@@ -19,7 +21,10 @@ app.config.from_object(DevConfig)
 CORS(app, supports_credentials=True)
 
 # Flask-JWT-Extended
-app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET')
+app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET')  # Set JWT Secret
+app.config['JWT_TOKEN_LOCATION'] = ['cookies']  # Set token location to cookies
+app.config['JWT_COOKIE_SECURE'] = True  # Set cookie to be secure
+app.config['JWT_COOKIE_HTTP_ONLY'] = True  # Set cookie to be HTTP-only
 jwt = JWTManager(app)
 
 # Logging
@@ -32,6 +37,9 @@ except FileNotFoundError:
 
 # SQLAlchemy
 db.init_app(app)
+
+migrate = Migrate(app, db)
+
 api = Api(app,doc='/docs')
 journal_model=api.model(
     "journals", {
@@ -40,6 +48,14 @@ journal_model=api.model(
         "entry_text":fields.String(),
         "date":fields.String(),
         "emotion":fields.String()
+    }
+)
+
+user_model=api.model(
+    "user", {
+        "email":fields.String(),
+        "username":fields.String(),
+        "password":fields.String(),
     }
 )
 
@@ -66,7 +82,11 @@ def create_journal():
 @api.marshal_with(journal_model)
 def get_all_journals():
     journals=Journal.query.all()
-    return journals
+    if journals == []:
+        return journals, 404
+    else:
+        return journals, 200
+
 
 # Single Journal by ID
 @api.route('/journal/<int:id>')
@@ -101,24 +121,61 @@ def make_shell_context():
     }
 
 
-# ==================== LOGIN ENDPOINTS ====================
+# ==================== LOGIN ENDPOINT ====================
 @app.route("/login", methods=["POST"])
-def create_token():
-    username = request.json.get("username")
+def login_user():
+    email = request.json.get("email")
     password = request.json.get("password")
+
+    user = User.query.get({'email':email})
+    if user is None:
+        return jsonify(msg="User doesn't exist!"), 401
     
-    # Add your user authentication logic here (searching database for a match)
-    if username == 'admin' and password == 'admin':
-        access_token = create_access_token(identity=username)
-        return jsonify(access_token=access_token), 200
+    if check_password_hash(user.password, password):
+        access_token = create_access_token(identity=email)
+        response_json = jsonify(msg='Login successful')
+        set_access_cookies(response_json, access_token)
+        return response_json, 200
     else:
-        return jsonify(msg="Wrong username or password"), 401
-    
+        return jsonify(msg="Wrong password!"), 401
+        
+
+@app.route('/protected', methods=['GET'])
+@jwt_required()
+def protected():
+    current_user = get_jwt_identity()
+    if current_user is None:
+        return jsonify(msg='Not signed in'), 401
+
+    return jsonify(msg=('Hello, %s!' % current_user)), 200
+
+
+# ==================== SIGN-UP ENDPOINT ====================
+@app.route('/signup', methods=["POST"])
+def signup_user():
+        data = request.get_json()
+        try:
+            new_user = User(
+                username=data.get('username'),
+                email=data.get('email'),
+                password=generate_password_hash(data.get('password'))
+            )
+            new_user.save()
+        except:
+            return jsonify(msg="An account with that email already exists!"), 403
+
+        return jsonify(msg=("Successfully created account with email \'%s\'" % data.get('email'))), 201
+
+
 # ==================== HEALTH-CHECK ENDPOINT ====================
 @app.route("/health")
 def health_check():
     return 'OK', 200
 
+
 # ==================== LAUNCH ====================
+with app.app_context():
+    db.create_all()
+
 if __name__ == "__main__":
     app.run(debug=True, port=8080)

@@ -1,11 +1,4 @@
-/* eslint-disable no-unused-vars */
-import Home from './pages/Home'
-import LogIn from './pages/LogIn'
-import SignUp from './pages/SignUp'
-import JournalWrite from './pages/JournalWrite'
-import AllJournals from './pages/AllJournals'
-import JournalView from './pages/JournalView'
-import Page404 from './pages/Page404'
+import { Home, LogIn, SignUp, JournalWrite, AllJournals, JournalView, Page404 } from '../pages'
 
 
 export const emotions = {
@@ -28,43 +21,43 @@ export const pages = {
     Home: {
         name: 'Home',
         path: '/',
-        component: <Home/>,
+        component: <Home />,
         sidebar: false,
     },
     LogIn: {
         name: 'Log In',
         path: '/login',
-        component: <LogIn/>,
+        component: <LogIn />,
         sidebar: true,
     },
     SignUp: {
         name: 'Sign Up',
         path: '/signup',
-        component: <SignUp/>,
+        component: <SignUp />,
         sidebar: true,
     },
     JournalWrite: {
         name: 'Write Journal',
         path: '/journal',
-        component: <JournalWrite/>,
+        component: <JournalWrite />,
         sidebar: true,
     },
     AllJournals: {
         name: 'View Journals',
         path: '/view-journals',
-        component: <AllJournals/>,
+        component: <AllJournals />,
         sidebar: true,
     },
     JournalView: {
         name: 'View Journal',
         path: '/view-journals/:id',
-        component: <JournalView/>,
+        component: <JournalView />,
         sidebar: false,
     },
     Page404: {
         name: '404 Page',
         path: '*',
-        component: <Page404/>,
+        component: <Page404 />,
         sidebar: false,
     },
 }
