@@ -3,6 +3,7 @@ from flask_restx import Api, Resource, fields
 from flask_migrate import Migrate
 from flask_cors import CORS
 from flask import Flask, jsonify, request
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from datetime import datetime
 import logging
@@ -130,7 +131,7 @@ def login_user():
     if user is None:
         return jsonify(msg="User doesn't exist!"), 401
     
-    if user.password == password:
+    if check_password_hash(user.password, password):
         access_token = create_access_token(identity=email)
         response_json = jsonify(msg='Login successful')
         set_access_cookies(response_json, access_token)
@@ -157,7 +158,7 @@ def signup_user():
             new_user = User(
                 username=data.get('username'),
                 email=data.get('email'),
-                password=data.get('password')
+                password=generate_password_hash(data.get('password'))
             )
             new_user.save()
         except:
