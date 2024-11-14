@@ -1,10 +1,12 @@
-import { pages } from '../../utilities'
-
 import './LogOutButton.css'
+
 
 export default function LogOutButton() {
 
-    function logOut() { } //TODO
+    function logOut() {
+        //TODO
+        console.log("logged out")
+    }
 
     return <div id='logout-button' className='logout-button' onClick={logOut}>
         Log Out

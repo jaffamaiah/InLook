@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { axiosClient, errorHandler } from '../../utilities'
+import { axiosClient, pages, errorHandler } from '../../utilities'
 
 
 export default function LogIn() {
@@ -35,7 +35,7 @@ export default function LogIn() {
 
 
     return <div>
-        <h1>Log In</h1>
+        <h1>{pages.LogIn.name}</h1>
         <form>
             <div>
                 <input type='email' onChange={(e) => setEmail(e.target.value)} />

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 
 import { JournalIcon } from '../../components'
-import { pages, axiosClient, errorHandler } from '../../utilities'
-import './AllJournals.css'
+import { pages, axiosClient} from '../../utilities'
+import './MyJournal.css'
 
 
-export default function AllJournals() {
+export default function MyJournal() {
     const [journalEntries, setjournalEntries] = useState(null)
     const [error, setError] = useState(null)
 
@@ -19,11 +19,11 @@ export default function AllJournals() {
             }
         }
         fetchData()
-    }, [])
+    })
 
 
     return <div>
-        <h1>All Journals</h1>
+        <h1>{pages.MyJournal.name}</h1>
 
         {error && <h2>{error}</h2>}
 
@@ -31,7 +31,7 @@ export default function AllJournals() {
             <div className='journal-grid'>{
                 journalEntries.map(journal => (
                     <JournalIcon
-                        path={pages.AllJournals.path + `/${journal.id}`}
+                        path={pages.MyJournal.path + `/${journal.id}`}
                         title={journal.title}
                         date={journal.date}
                     />

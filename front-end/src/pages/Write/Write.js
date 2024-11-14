@@ -6,10 +6,10 @@ import { useNavigate } from 'react-router-dom'
 
 import { EmotionDropdown } from '../../components'
 import { pages, axiosClient, errorHandler } from '../../utilities'
-import './JournalWrite.css'
+import './Write.css'
 
 
-export default function JournalWrite() {
+export default function Write() {
 
     const todaysDate = new Date()
     const navigate = useNavigate()
@@ -45,14 +45,14 @@ export default function JournalWrite() {
                 date_time: todaysDate.toISOString(),
                 emotion: (!!emotion ? emotion : '') // empty string if emotion is null
             })
-            navigate(pages.AllJournals.path + `/${response.data.id}`)
+            navigate(pages.MyJournal.path + `/${response.data.id}`)
         } catch (error) {
             errorHandler(error)
         }
     }
 
     return <div>
-        <h1>Write Journal</h1>
+        <h1>{pages.Write.name}</h1>
 
         <h2>{
             todaysDate.toLocaleString('en-US', {

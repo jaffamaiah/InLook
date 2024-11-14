@@ -4,6 +4,7 @@ import './NavBar.css'
 import { pages } from '../../utilities'
 import LogOutButton from '../LogOutButton/LogOutButton'
 
+
 export default function NavBar() {
 
     const [isOpen, setIsOpen] = useState(false)
@@ -12,10 +13,7 @@ export default function NavBar() {
         setIsOpen(!isOpen)
     }
 
-    console.log((new Date()).toISOString())
-
     return <>
-
         <div id='topbar' className='topbar'>
             <img className='hamburger-menu' src='/NavBar/Hamburger_Menu.svg' alt='' onClick={toggleSidebar} />
             <a href={pages.Home.path}>
@@ -40,9 +38,9 @@ export default function NavBar() {
 
             <ul className='nav-links'>
                 <li>
-                    <a id='my-journal' href={pages.AllJournals.path}>
+                    <a id='my-journal' href={pages.MyJournal.path}>
                         <img id='edit' src='/NavBar/Edit.svg' alt='' />
-                        {pages.AllJournals.name}
+                        {pages.MyJournal.name}
                     </a>
                 </li>
                 <li>

@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { Slate, Editable } from 'slate-react'
 import { createEditor } from 'slate'
 
-import { pages, axiosClient } from '../../utilities'
+import { axiosClient, pages } from '../../utilities'
 
 
-export default function JournalView() {
+export default function Read() {
     const { id } = useParams()
-    const navigate = useNavigate()
 
     const [journalData, setJournalData] = useState(null)
     const [error, setError] = useState(null)
@@ -37,7 +36,7 @@ export default function JournalView() {
     }, [id])
 
     return <div>
-        <h1>Journal View</h1>
+        <h1>{pages.Read.name}</h1>
         {error && <h2>{error}</h2>}
         {journalData && <div>
             <h2>{`Title: ${journalData.title}`}</h2>
