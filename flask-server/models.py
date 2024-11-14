@@ -7,14 +7,12 @@ class Journal(db.Model):
     entry_text = db.Column(db.String, nullable=False)
     emotion = db.Column(db.String, nullable=False)
     date = db.Column(db.String, default=db.func.now())  # You can define a default value
-    
 
     # Methods
     def __repr__(self):
         return f"<Journal {self.title}>"
 
     def save(self):
-        db.create_all()
         db.session.add(self)
         db.session.commit()
 
@@ -30,10 +28,10 @@ class Journal(db.Model):
 
 
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(25), nullable=False, unique=True)
-    email = db.Column(db.String(80), nullable=False)
-    password = db.Column(db.String(30), nullable=False)
+    __tablename__ = "users"
+    email = db.Column(db.String, primary_key=True)
+    username = db.Column(db.String, nullable=False)
+    password = db.Column(db.String, nullable=False)
 
     def __repr__(self):
         """returns string rep of object - password """

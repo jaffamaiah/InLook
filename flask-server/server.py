@@ -3,15 +3,15 @@ from flask_restx import Api, Resource, fields
 from flask_migrate import Migrate
 from flask_cors import CORS
 from flask import Flask, jsonify, request
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from datetime import datetime
-from config import DevConfig
-from models import Journal
-from models import User
-from exts import db
-
 import logging
 import os
+
+from config import DevConfig
+from models import Journal, User
+from exts import db
 
 
 # ==================== CONFIGURATION ====================
@@ -53,9 +53,8 @@ journal_model=api.model(
 
 user_model=api.model(
     "user", {
-        "id":fields.Integer(),
-        "username":fields.String(),
         "email":fields.String(),
+        "username":fields.String(),
         "password":fields.String(),
     }
 )
@@ -83,7 +82,11 @@ def create_journal():
 @api.marshal_with(journal_model)
 def get_all_journals():
     journals=Journal.query.all()
-    return journals
+    if journals == []:
+        return journals, 404
+    else:
+        return journals, 200
+
 
 # Single Journal by ID
 @api.route('/journal/<int:id>')
@@ -120,35 +123,47 @@ def make_shell_context():
 
 # ==================== LOGIN ENDPOINT ====================
 @app.route("/login", methods=["POST"])
-@api.marshal_with(user_model)
 def login_user():
     email = request.json.get("email")
     password = request.json.get("password")
 
-    user = User.query.get('email')
-    if user:
-        if user.__repr__().find(password) != -1:
-            access_token = create_access_token(identity=email)
-            response_json = jsonify(message='Login successful')
-            set_access_cookies(response_json, access_token)
-            return response_json, 200
-        else:
-            return jsonify(msg="Wrong password!"), 401
-    else:
+    user = User.query.get({'email':email})
+    if user is None:
         return jsonify(msg="User doesn't exist!"), 401
+    
+    if check_password_hash(user.password, password):
+        access_token = create_access_token(identity=email)
+        response_json = jsonify(msg='Login successful')
+        set_access_cookies(response_json, access_token)
+        return response_json, 200
+    else:
+        return jsonify(msg="Wrong password!"), 401
 
 @app.route('/protected', methods=['GET'])
 @jwt_required()
 def protected():
     current_user = get_jwt_identity()
     if current_user is None:
-        return jsonify(message=f'Not signed in'), 401
+        return jsonify(msg='Not signed in'), 401
 
-    return jsonify(message=f'Hello, {current_user}!'), 200
+    return jsonify(msg=('Hello, %s!' % current_user)), 200
 
 
 # ==================== SIGN-UP ENDPOINT ====================
+@app.route('/signup', methods=["POST"])
+def signup_user():
+        data = request.get_json()
+        try:
+            new_user = User(
+                username=data.get('username'),
+                email=data.get('email'),
+                password=generate_password_hash(data.get('password'))
+            )
+            new_user.save()
+        except:
+            return jsonify(msg="An account with that email already exists!"), 403
 
+        return jsonify(msg=("Successfully created account with email \'%s\'" % data.get('email'))), 201
 
 
 # ==================== HEALTH-CHECK ENDPOINT ====================
@@ -158,5 +173,8 @@ def health_check():
 
 
 # ==================== LAUNCH ====================
+with app.app_context():
+    db.create_all()
+
 if __name__ == "__main__":
     app.run(debug=True, port=8080)

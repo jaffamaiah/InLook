@@ -1,43 +1,39 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Slate, Editable } from 'slate-react'
 import { createEditor } from 'slate'
 
-const JournalView = () => {
+import { pages, axiosClient } from '../../utilities'
+
+
+export default function JournalView() {
     const { id } = useParams()
+    const navigate = useNavigate()
 
     const [journalData, setJournalData] = useState(null)
     const [error, setError] = useState(null)
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/journal/${id}`)
-            .then((response) => {
+        async function fetchData() {
+            try {
+                let response = await axiosClient.get(`http://localhost:8080/journal/${id}`)
                 let slateEntry = []
                 response.data['entry_text'].split('\n').forEach((line) => {
-                    slateEntry.push(
-                        {
-                            type: 'paragraph',
-                            children: [{ text: line }],
-                        }
-                    )
+                    slateEntry.push({
+                        type: 'paragraph',
+                        children: [{ text: line }],
+                    })
                 })
-                setJournalData(
-                    {
-                        'title': response.data.title,
-                        'date': response.data.date,
-                        'entry': slateEntry
-                    }
-                )
-            })
-            .catch((error) => {
-                if (error['status'] === 404) {
-                    setError(`Error: Journal with ID ${id} not found!`)
-                } else {
-                    console.log(error)
-                    setError(`Error: check console!`)
-                }
-            })
+                setJournalData({
+                    'title': response.data.title,
+                    'date': response.data.date,
+                    'entry': slateEntry
+                })
+            } catch {
+                setError(`No Journal with ID ${id} found`)
+            }
+        }
+        fetchData()
     }, [id])
 
     return <div>
@@ -52,6 +48,3 @@ const JournalView = () => {
         </div>}
     </div>
 }
-
-
-export default JournalView

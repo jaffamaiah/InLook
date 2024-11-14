@@ -1,35 +1,36 @@
 import React, { useState } from 'react'
-import { axiosClient } from '../../utilities';
+import { axiosClient, errorHandler } from '../../utilities'
+
 
 export default function LogIn() {
     
-    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const testAccess = async () => {
+    async function testAccess() {
         try {
-            const response = await axiosClient.get('http://localhost:8080/protected');
-            console.log(response.data);
+            let response = await axiosClient.get('http://localhost:8080/protected')
+            alert(response.data.msg)
         } catch (error) {
-            console.error(error);
+            errorHandler(error)
         }
-    };
+    }
 
-    const logInUser = async () => {
-        if (username.length === 0)
-            return alert('Username has been left blank!')
+    async function logInUser() {
+        if (email.length === 0)
+            return alert('Email has been left blank!')
         if (password.length === 0)
             return alert('Password has been left blank!')
 
         try {
-            await axiosClient.post('http://localhost:8080/login', {
-                username: username,
+            let response = await axiosClient.post('http://localhost:8080/login', {
+                email: email,
                 password: password
             })
+            alert(response.data.msg)
         } catch (error) {
-            console.error(error);
+            errorHandler(error)
         }
-
     }
 
 
@@ -37,8 +38,8 @@ export default function LogIn() {
         <h1>Log In</h1>
         <form>
             <div>
-                <input type='username' onChange={(e) => setUsername(e.target.value)} />
-                <label for='username'> Username</label>
+                <input type='email' onChange={(e) => setEmail(e.target.value)} />
+                <label for='email'> Email</label>
             </div>
 
             <div>

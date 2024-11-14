@@ -3,29 +3,25 @@ import { Slate, Editable, withReact } from 'slate-react'
 import { withHistory } from 'slate-history'
 import { createEditor } from 'slate'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
 
 import { EmotionDropdown } from '../../components'
-import { pages } from '../../utilities'
+import { pages, axiosClient, errorHandler } from '../../utilities'
 import './JournalWrite.css'
 
-const initialEntry = [
-    {
+
+export default function JournalWrite() {
+
+    const todaysDate = new Date()
+    const navigate = useNavigate()
+    const initialEntry = [{
         type: 'paragraph',
-        children: [{ text: '' }],
-    }
-]
-
-const todaysDate = new Date()
-
-const JournalWrite = () => {
+        children: [{ text: '' }]
+    }]
 
     const editor = useMemo(() => withHistory(withReact(createEditor())), [])
     const [entry, setEntry] = useState(initialEntry)
     const [title, setTitle] = useState('')
     const [emotion, setEmotion] = useState(null)
-
-    const navigate = useNavigate()
 
     function getEntryText() {
         let entryText = entry[0]['children'][0]['text']
@@ -35,25 +31,24 @@ const JournalWrite = () => {
         return entryText
     }
 
-    const submitJournal = () => {
+    async function submitJournal() {
         const journalEntryText = getEntryText()
         if (title.length === 0)
             return alert('Title has been left blank!')
         if (journalEntryText.length === 0)
             return alert('Journal has been left blank!')
-        axios.post('http://localhost:8080/create-journal', {
-            title: title,
-            entry_text: journalEntryText,
-            date_time: todaysDate.toISOString(),
-            emotion: (!!emotion ? emotion : '') // empty string if emotion is null
-        })
-            .then(function (response) {
-                navigate(pages.AllJournals.path + `/${response.data.id}`)
+      
+        try {
+            let response = await axiosClient.post('http://localhost:8080/create-journal', {
+                title: title,
+                entry_text: journalEntryText,
+                date_time: todaysDate.toISOString(),
+                emotion: (!!emotion ? emotion : '') // empty string if emotion is null
             })
-            .catch(function (error) {
-                console.log(error)
-                alert('Invalid journal')
-            })
+            navigate(pages.AllJournals.path + `/${response.data.id}`)
+        } catch (error) {
+            errorHandler(error)
+        }
     }
 
     return <div>
@@ -78,6 +73,3 @@ const JournalWrite = () => {
         <button className='submit-button' type='button' onClick={submitJournal} >Submit</button>
     </div>
 }
-
-
-export default JournalWrite
