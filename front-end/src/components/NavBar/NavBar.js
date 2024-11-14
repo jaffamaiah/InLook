@@ -12,6 +12,8 @@ export default function NavBar() {
         setIsOpen(!isOpen)
     }
 
+    console.log((new Date()).toISOString())
+
     return <>
 
         <div id='topbar' className='topbar'>
@@ -38,15 +40,9 @@ export default function NavBar() {
 
             <ul className='nav-links'>
                 <li>
-                    <a id='write-journal' href={pages.JournalWrite.path}>
+                    <a id='my-journal' href={pages.AllJournals.path}>
                         <img id='edit' src='/NavBar/Edit.svg' alt='' />
-                        {pages.JournalWrite.name}
-                    </a>
-                </li>
-                <li>
-                    <a id='read-journal' href={pages.AllJournals.path}>
-                        <img id='eye' src='/NavBar/Eye.svg' alt='' />
-                        Read Journal
+                        {pages.AllJournals.name}
                     </a>
                 </li>
                 <li>

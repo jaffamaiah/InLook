@@ -39,7 +39,7 @@ export const pages = {
         component: <JournalWrite />,
     },
     AllJournals: {
-        name: 'Read Journals',
+        name: 'My Journal',
         path: '/view-journals',
         component: <AllJournals />,
     },

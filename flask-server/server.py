@@ -138,7 +138,7 @@ def login_user():
         return jsonify(msg="User doesn't exist!"), 401
 
 @app.route('/protected', methods=['GET'])
-@jwt_required(optional=True)
+@jwt_required()
 def protected():
     current_user = get_jwt_identity()
     if current_user is None:
