@@ -7,6 +7,7 @@ class Journal(db.Model):
     entry_text = db.Column(db.String, nullable=False)
     emotion = db.Column(db.String, nullable=False)
     date = db.Column(db.String, default=db.func.now())  # You can define a default value
+    user_email = db.Column(db.String, nullable=False) 
 
     # Methods
     def __repr__(self):

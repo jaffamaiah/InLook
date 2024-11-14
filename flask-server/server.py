@@ -64,6 +64,11 @@ user_model=api.model(
 @app.route("/create-journal", methods=["POST"])
 @api.marshal_with(journal_model)
 def create_journal():
+    # check if user is logged in
+    current_user = get_jwt_identity()
+    if current_user is None:
+        return jsonify(msg='Not signed in'), 401
+    
     data = request.get_json()
     # formatting date time string to mm-dd-yyyy
     date_time_string = data.get('date_time')
@@ -73,7 +78,8 @@ def create_journal():
         title=data.get('title'),
         entry_text=data.get('entry_text'),
         date=formatted_date,
-        emotion=data.get('emotion')
+        emotion=data.get('emotion'),
+        user_email = current_user
     )
     new_journal.save()
     return new_journal, 201
@@ -81,6 +87,11 @@ def create_journal():
 @app.route("/get-all-journals", methods=["GET"])
 @api.marshal_with(journal_model)
 def get_all_journals():
+    # check if user is logged in
+    current_user = get_jwt_identity()
+    if current_user is None:
+        return jsonify(msg='Not signed in'), 401
+    
     journals=Journal.query.all()
     if journals == []:
         return journals, 404
@@ -93,6 +104,11 @@ def get_all_journals():
 class JournalResource(Resource):
     @api.marshal_with(journal_model)
     def get(self,id):
+        # check if user is logged in
+        current_user = get_jwt_identity()
+        if current_user is None:
+            return jsonify(msg='Not signed in'), 401
+        
         """Get Journal"""
         journal=Journal.query.get_or_404(id)
         return journal
@@ -100,6 +116,11 @@ class JournalResource(Resource):
     @api.marshal_with(journal_model)
     def put(self,id):
         """Update Journal"""
+        # check if user is logged in
+        current_user = get_jwt_identity()
+        if current_user is None:
+            return jsonify(msg='Not signed in'), 401
+        
         journal_to_update=Journal.query.get_or_404(id)
         data=request.get_json()
         journal_to_update.update(data.get('title'), data.get('entry_text'))
@@ -108,6 +129,11 @@ class JournalResource(Resource):
     @api.marshal_with(journal_model)
     def delete(self,id):
        """Delete Journal"""
+       # check if user is logged in
+       current_user = get_jwt_identity()
+       if current_user is None:
+            return jsonify(msg='Not signed in'), 401
+       
        journal_to_delete=Journal.query.get_or_404(id)
        journal_to_delete.delete()
        return journal_to_delete
