@@ -121,7 +121,8 @@ def make_shell_context():
     }
 
 # search journal by emotion
-@app.route("/search-journals", methods=["GET"])
+# ex: http://localhost:8080/emotion-search?emotion=happy
+@app.route("/emotion-search", methods=["GET"])
 @api.marshal_with(journal_model)
 def search_journals():
     # Get the emotion from the query parameters
@@ -139,7 +140,8 @@ def search_journals():
     return journals, 200
 
 #search journal by keyword
-@app.route("/search-journals-by-title", methods=["GET"])
+# ex: http://localhost:8080/title-search?keyword=happy
+@app.route("/title-search", methods=["GET"])
 @api.marshal_with(journal_model)
 def search_journals_by_title():
     # Get the keyword from the query parameters
