@@ -6,12 +6,13 @@ import { useNavigate } from 'react-router-dom'
 
 import { EmotionDropdown } from '../../components'
 import { pages, axiosClient, errorHandler } from '../../utilities'
-import './JournalWrite.css'
+import './Write.css'
 
 
-export default function JournalWrite() {
+export default function Write() {
 
     const todaysDate = new Date()
+    const navigate = useNavigate()
     const initialEntry = [{
         type: 'paragraph',
         children: [{ text: '' }]
@@ -21,7 +22,6 @@ export default function JournalWrite() {
     const [entry, setEntry] = useState(initialEntry)
     const [title, setTitle] = useState('')
     const [emotion, setEmotion] = useState(null)
-    const navigate = useNavigate()
 
     function getEntryText() {
         let entryText = entry[0]['children'][0]['text']
@@ -37,7 +37,7 @@ export default function JournalWrite() {
             return alert('Title has been left blank!')
         if (journalEntryText.length === 0)
             return alert('Journal has been left blank!')
-
+      
         try {
             let response = await axiosClient.post('http://localhost:8080/create-journal', {
                 title: title,
@@ -45,15 +45,14 @@ export default function JournalWrite() {
                 date_time: todaysDate.toISOString(),
                 emotion: (!!emotion ? emotion : '') // empty string if emotion is null
             })
-            navigate(pages.AllJournals.path + `/${response.data.id}`)
+            navigate(pages.MyJournal.path + `/${response.data.id}`)
         } catch (error) {
             errorHandler(error)
         }
     }
 
-    
     return <div>
-        <h1>Write Journal</h1>
+        <h1>{pages.Write.name}</h1>
 
         <h2>{
             todaysDate.toLocaleString('en-US', {
