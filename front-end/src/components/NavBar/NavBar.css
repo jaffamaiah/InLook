@@ -1,7 +1,7 @@
 /* TOPBAR */
 .topbar {
     display: flex;
-    justify-content:space-between;
+    justify-content: space-between;
     align-items: center;
     padding: 0.5vw;
     width: 100vw;
@@ -10,10 +10,11 @@
 .hamburger-menu {
     height: 8vh;
     padding-right: 2vw;
+    cursor: pointer;
 }
 
 .logo {
-    height: 5vh;
+    height: 5.5vh;
 }
 
 .topbar-logout {
@@ -26,32 +27,35 @@
 .sidebar {
     position: absolute;
     height: 100%;
-    width: 20%;
-    left: -21%;
+    width: 21%;
+    left: -22%;
     top: 0;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     background-color: #f4f5f7;
+    font-weight: 600;
     filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25));
     transition: left 0.4s ease-in-out;
 }
+
 .sidebar.open {
     left: 0;
 }
-
 
 .spacer {
     flex-grow: 1
 }
 
 
+
 .x {
-    position: absolute;
-    height: 3vw;
+    width: 3.5vw;
     padding: 0px;
     align-self: flex-end;
+    cursor: pointer;
 }
+
 
 
 .profile-section {
@@ -62,10 +66,10 @@
     color: #000000;
     letter-spacing: 1px;
 }
+
 .profile-section img {
     width: min(30vh, 15vw);
 }
-
 
 
 
@@ -73,11 +77,13 @@
     list-style-type: none;
     padding: 0;
 }
+
 .nav-links img {
-    padding-left: 1vw;
-    padding-right: 1vw;
-    width: 3vw;
+    padding-left: 0.5vw;
+    padding-right: 0.5vw;
+    width: 3.5vw;
 }
+
 .nav-links a {
     display: flex;
     align-items: center;
@@ -87,6 +93,7 @@
     letter-spacing: 0.05vw;
     padding-bottom: 30px;
 }
+
 
 
 .sidebar-logout {
