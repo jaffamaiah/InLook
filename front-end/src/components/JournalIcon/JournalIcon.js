@@ -10,6 +10,7 @@ export default function JournalIcon(args) {
         <div className='journal-icon' onClick={() => navigate(args.path)}>
             <h3>{args.date}</h3>
             <h3>{args.title}</h3>
+            <h3>{args.emotion}</h3>
         </div >
     )
 }

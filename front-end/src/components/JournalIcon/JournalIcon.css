@@ -1,8 +1,20 @@
 .journal-icon {
+    width: 16.4vw;
     display: inline-block;
-    width: 30vw;
-    height: 30vh;
     border-radius: 5px;
     border: 3px solid black;
     text-align: center;
+    cursor: pointer;
+}
+
+.new-icon {
+    width: 16.4vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    border: 3px solid black;
+    font-size: 6vw;
+    font-weight: 300;
+    cursor: pointer;
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
-import { JournalIcon } from '../../components'
-import { pages, axiosClient} from '../../utilities'
+import { JournalIcon, NewIcon } from '../../components'
+import { pages, axiosClient } from '../../utilities'
 import './MyJournal.css'
 
 
@@ -28,15 +28,17 @@ export default function MyJournal() {
         {error && <h2>{error}</h2>}
 
         {journalEntries && (
-            <div className='journal-grid'>{
-                journalEntries.map(journal => (
+            <nav className='journal-grid'>
+                <NewIcon />
+                {journalEntries.toReversed().map(journal => (
                     <JournalIcon
-                        path={pages.MyJournal.path + `/${journal.id}`}
-                        title={journal.title}
-                        date={journal.date}
+                    path={pages.MyJournal.path + `/${journal.id}`}
+                    title={journal.title}
+                    date={journal.date}
+                    emotion={journal.emotion}
                     />
-                ))
-            }</div>
+                ))}
+            </nav>
         )}
     </div>
 }
