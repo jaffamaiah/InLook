@@ -1,4 +1,4 @@
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, set_access_cookies
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, set_access_cookies, get_jwt
 from flask_restx import Api, Resource, fields
 from flask_migrate import Migrate
 from flask_cors import CORS
@@ -26,6 +26,18 @@ app.config['JWT_TOKEN_LOCATION'] = ['cookies']  # Set token location to cookies
 app.config['JWT_COOKIE_SECURE'] = True  # Set cookie to be secure
 app.config['JWT_COOKIE_HTTP_ONLY'] = True  # Set cookie to be HTTP-only
 jwt = JWTManager(app)
+
+# Logout
+blocklist = set()
+
+# Check if user is logged in
+def check_user():
+    current_user = get_jwt_identity()
+    current_token = get_jwt()
+    if current_user is None:
+        return jsonify(msg='Not signed in'), 401
+    elif current_token in blocklist:
+        return jsonify(msg='Token revoked'), 401
 
 # Logging
 try:
@@ -65,9 +77,7 @@ user_model=api.model(
 @api.marshal_with(journal_model)
 def create_journal():
     # check if user is logged in
-    current_user = get_jwt_identity()
-    if current_user is None:
-        return jsonify(msg='Not signed in'), 401
+    check_user()
     
     data = request.get_json()
     # formatting date time string to mm-dd-yyyy
@@ -79,7 +89,7 @@ def create_journal():
         entry_text=data.get('entry_text'),
         date=formatted_date,
         emotion=data.get('emotion'),
-        user_email = current_user
+        user_email = get_jwt_identity()
     )
     new_journal.save()
     return new_journal, 201
@@ -88,9 +98,7 @@ def create_journal():
 @api.marshal_with(journal_model)
 def get_all_journals():
     # check if user is logged in
-    current_user = get_jwt_identity()
-    if current_user is None:
-        return jsonify(msg='Not signed in'), 401
+    check_user()
     
     journals=Journal.query.all()
     if journals == []:
@@ -105,9 +113,7 @@ class JournalResource(Resource):
     @api.marshal_with(journal_model)
     def get(self,id):
         # check if user is logged in
-        current_user = get_jwt_identity()
-        if current_user is None:
-            return jsonify(msg='Not signed in'), 401
+        check_user
         
         """Get Journal"""
         journal=Journal.query.get_or_404(id)
@@ -117,9 +123,7 @@ class JournalResource(Resource):
     def put(self,id):
         """Update Journal"""
         # check if user is logged in
-        current_user = get_jwt_identity()
-        if current_user is None:
-            return jsonify(msg='Not signed in'), 401
+        check_user()
         
         journal_to_update=Journal.query.get_or_404(id)
         data=request.get_json()
@@ -130,9 +134,7 @@ class JournalResource(Resource):
     def delete(self,id):
        """Delete Journal"""
        # check if user is logged in
-       current_user = get_jwt_identity()
-       if current_user is None:
-            return jsonify(msg='Not signed in'), 401
+       check_user()
        
        journal_to_delete=Journal.query.get_or_404(id)
        journal_to_delete.delete()
@@ -175,6 +177,14 @@ def protected():
 
     return jsonify(msg=('Hello, %s!' % current_user)), 200
 
+# ==================== LOGOUT ENDPOINT ====================
+@app.route('/logout', methods=["GET"])
+@jwt_required()
+def logout_user():
+    current_token = get_jwt()
+    blocklist.add(current_token)
+    return {"message": "Successfully logged out"}, 200
+
 
 # ==================== SIGN-UP ENDPOINT ====================
 @app.route('/signup', methods=["POST"])
@@ -187,10 +197,14 @@ def signup_user():
                 password=generate_password_hash(data.get('password'))
             )
             new_user.save()
+            # Log user in after signing up
+            access_token = create_access_token(identity=email)
+            response_json = jsonify(msg='Login successful')
+            set_access_cookies(response_json, access_token)
+            return response_json, 200
+
         except:
             return jsonify(msg="An account with that email already exists!"), 403
-
-        return jsonify(msg=("Successfully created account with email \'%s\'" % data.get('email'))), 201
 
 
 # ==================== HEALTH-CHECK ENDPOINT ====================
