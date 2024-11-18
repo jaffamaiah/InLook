@@ -1,4 +1,4 @@
-import { Home, LogIn, SignUp, JournalWrite, AllJournals, JournalView, Page404 } from '../pages'
+import { Home, LogIn, SignUp, Write, MyJournal, Read, Page404 } from '../pages'
 
 
 export const emotions = {
@@ -22,42 +22,50 @@ export const pages = {
         name: 'Home',
         path: '/',
         component: <Home />,
-        sidebar: false,
     },
     LogIn: {
         name: 'Log In',
         path: '/login',
         component: <LogIn />,
-        sidebar: true,
     },
     SignUp: {
         name: 'Sign Up',
         path: '/signup',
         component: <SignUp />,
-        sidebar: true,
     },
-    JournalWrite: {
+    Write: {
         name: 'Write Journal',
-        path: '/journal',
-        component: <JournalWrite />,
-        sidebar: true,
+        path: '/write',
+        component: <Write />,
     },
-    AllJournals: {
-        name: 'View Journals',
-        path: '/view-journals',
-        component: <AllJournals />,
-        sidebar: true,
+    MyJournal: {
+        name: 'My Journal',
+        path: '/my-journal',
+        component: <MyJournal />,
     },
-    JournalView: {
-        name: 'View Journal',
-        path: '/view-journals/:id',
-        component: <JournalView />,
-        sidebar: false,
+    Read: {
+        name: 'Read Journal',
+        path: '/my-journal/:id',
+        component: <Read />,
+    },
+    AccountSettings: {
+        name: 'Account Settings',
+        path: '/settings',
+        component: <div/>,
+    },
+    Profile: {
+        name: 'My Profile',
+        path: '/profile',
+        component: <div/>,
+    },
+    Emotions: {
+        name: 'Emotions',
+        path: '/emotions',
+        component: <div/>,
     },
     Page404: {
-        name: '404 Page',
+        name: '404: Page not found...',
         path: '*',
         component: <Page404 />,
-        sidebar: false,
     },
 }

@@ -1,67 +1,94 @@
-/* TOP NAVBAR */
-.navbar {
-    height: 10vh;
-    width: 100vw;
+/* TOPBAR */
+.topbar {
     display: flex;
-    justify-content: space-between;
+    justify-content:space-between;
     align-items: center;
-    background-color: #333;
-    color: #fff;
-    position: fixed;
-    top: 0;
+    padding: 0.5vw;
+    width: 100vw;
 }
 
-.toggle-button {
-    float: right;
-    width: 5vw;
-    position: relative;
-    left: 1vh;
+.hamburger-menu {
+    height: 8vh;
+    padding-right: 2vw;
 }
 
 .logo {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #fff;
-    text-decoration: none;
+    height: 5vh;
 }
+
+.topbar-logout {
+    justify-self: flex-end;
+}
+
+
 
 /* SIDEBAR */
 .sidebar {
-    height: 90vh;
-    width: 20vw;
-    position: fixed;
-    left: -20vw;
-    bottom: 0px;
-    transition: left 0.3s ease-in-out;
-    background-color: #555;
+    position: absolute;
+    height: 100%;
+    width: 20%;
+    left: -21%;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #f4f5f7;
+    filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25));
+    transition: left 0.4s ease-in-out;
+}
+.sidebar.open {
+    left: 0;
 }
 
-.sidebar.open {
-    left: 0px;
+
+.spacer {
+    flex-grow: 1
 }
+
+
+.x {
+    position: absolute;
+    height: 3vw;
+    padding: 0px;
+    align-self: flex-end;
+}
+
+
+.profile-section {
+    align-self: center;
+    text-align: center;
+    font-size: 1.8vw;
+    text-decoration: none;
+    color: #000000;
+    letter-spacing: 1px;
+}
+.profile-section img {
+    width: min(30vh, 15vw);
+}
+
+
+
 
 .nav-links {
-    list-style: none;
+    list-style-type: none;
+    padding: 0;
 }
-
+.nav-links img {
+    padding-left: 1vw;
+    padding-right: 1vw;
+    width: 3vw;
+}
 .nav-links a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1.5rem;
-}
-
-/* DEFOCUS AREA */
-.sidebar-defocus-area {
-    height: 0;
-    width: 100vw;
-    background-color: black;
-    opacity: 0.4;
     display: flex;
     align-items: center;
-    justify-content: center;
+    text-decoration: none;
+    color: black;
+    font-size: 1.7vw;
+    letter-spacing: 0.05vw;
+    padding-bottom: 30px;
 }
 
-.sidebar-defocus-area.open {
-    height: 200vh;
+
+.sidebar-logout {
+    align-self: flex-end;
 }

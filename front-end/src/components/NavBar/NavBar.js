@@ -2,46 +2,67 @@ import React, { useState } from 'react'
 
 import './NavBar.css'
 import { pages } from '../../utilities'
+import LogOutButton from '../LogOutButton/LogOutButton'
 
 
 export default function NavBar() {
 
     const [isOpen, setIsOpen] = useState(false)
 
-    const toggleSidebar = () => {
+    function toggleSidebar() {
         setIsOpen(!isOpen)
     }
 
-    return <div>
-
-        <div className={`sidebar-defocus-area ${isOpen ? 'open' : ''}`} onClick={toggleSidebar} />
-
-        <nav className='navbar'>
-            <div className='navbar-left'>
-                <img src='/hamburger-menu.png' alt='Logo' className='toggle-button' onClick={toggleSidebar} />
-                {/* 
-                Icon by HideMaru
-                'https://www.freepik.com/icon/settings_13895453#fromView=search&page=1&position=5&uuid=47877187-26c6-4a38-bee1-2f315e7ef351'
-                */}
+    return <>
+        <div id='topbar' className='topbar'>
+            <img className='hamburger-menu' src='/NavBar/Hamburger_Menu.svg' alt='' onClick={toggleSidebar} />
+            <a href={pages.Home.path}>
+                <img className='logo' src='/NavBar/Logo.svg' alt='InLook Home' />
+            </a>
+            <div className='spacer' />
+            <div className='topbar-logout'>
+                <LogOutButton />
             </div>
-            <div className='navbar-center'>
-                <a href='/' className='logo'>InLook</a>
+        </div>
+
+        <nav id='sidebar' className={`sidebar ${isOpen ? 'open' : ''}`}>
+
+            <img id='x' className='x' src='/NavBar/X.svg' alt='close' onClick={toggleSidebar} />
+
+            <a href={pages.Profile.path} className='profile-section'>
+                <img src='/NavBar/Account_Circle.svg' alt='' />
+                <div>{pages.Profile.name}</div>
+            </a>
+
+            <div className='spacer' />
+
+            <ul className='nav-links'>
+                <li>
+                    <a id='my-journal' href={pages.MyJournal.path}>
+                        <img id='edit' src='/NavBar/Edit.svg' alt='' />
+                        {pages.MyJournal.name}
+                    </a>
+                </li>
+                <li>
+                    <a id='emotions' href={pages.Emotions.path}>
+                        <img id='heart' src='/NavBar/Heart.svg' alt='' />
+                        Emotions
+                    </a>
+                </li>
+                <li>
+                    <a id='account-settings' href={pages.AccountSettings.path}>
+                        <img id='settings' src='/NavBar/Settings.svg' alt='' />
+                        Account Settings
+                    </a>
+                </li>
+            </ul>
+
+            <div className='spacer' />
+
+            <div className='sidebar-logout'>
+                <LogOutButton />
             </div>
-            <div className='navbar-right' />
-        </nav>
 
-        <nav className={`sidebar ${isOpen ? 'open' : ''}`}>
-            <ul className='nav-links'>{
-                Object.entries(pages).map(([pageName, pageData]) => (
-                    pageData.sidebar ?
-                        <li key={pageName}>
-                            <a href={pageData.path}>{pageData.name}</a>
-                        </li>
-                        :
-                        <></>
-                ))
-            }</ul>
         </nav>
-
-    </div>
+    </>
 }

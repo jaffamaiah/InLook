@@ -166,7 +166,6 @@ def login_user():
         return response_json, 200
     else:
         return jsonify(msg="Wrong password!"), 401
-        
 
 @app.route('/protected', methods=['GET'])
 @jwt_required()
