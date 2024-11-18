@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { JournalIcon, NewIcon } from '../../components'
-import { pages, axiosClient } from '../../utilities'
+import { pages, axiosClient, ProtectedPage } from '../../utilities'
 import './MyJournal.css'
 
 
@@ -19,10 +19,11 @@ export default function MyJournal() {
             }
         }
         fetchData()
-    })
+    }, [])
 
 
-    return <div>
+    return <><ProtectedPage />
+
         <h1>{pages.MyJournal.name}</h1>
 
         {error && <h2>{error}</h2>}
@@ -40,5 +41,5 @@ export default function MyJournal() {
                 ))}
             </nav>
         )}
-    </div>
+    </>
 }

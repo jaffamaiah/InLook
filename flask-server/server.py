@@ -177,15 +177,6 @@ def login_user():
     else:
         return jsonify(msg="Wrong password!"), 401
 
-@app.route('/protected', methods=['GET'])
-@jwt_required()
-def protected():
-    current_user = get_jwt_identity()
-    if current_user is None:
-        return jsonify(msg='Not signed in'), 401
-
-    return jsonify(msg=('Hello, %s!' % current_user)), 200
-
 
 # ==================== SIGN-UP ENDPOINT ====================
 @app.route('/signup', methods=["POST"])
@@ -202,6 +193,17 @@ def signup_user():
             return jsonify(msg="An account with that email already exists!"), 403
 
         return jsonify(msg=("Successfully created account with email \'%s\'" % data.get('email'))), 201
+
+
+# ==================== AUTHENTICATION CHECK =====================
+@app.route('/check-authentication', methods=['GET'])
+@jwt_required()
+def check_authentication():
+    current_user = get_jwt_identity()
+    if current_user is None:
+        return jsonify(msg='Not signed in'), 401
+
+    return jsonify(msg=('Hello, %s!' % current_user)), 200
 
 
 # ==================== HEALTH-CHECK ENDPOINT ====================

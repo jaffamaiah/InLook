@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { Slate, Editable } from 'slate-react'
 import { createEditor } from 'slate'
 
-import { axiosClient, pages } from '../../utilities'
+import { axiosClient, pages, ProtectedPage } from '../../utilities'
 
 
 export default function Read() {
@@ -35,9 +35,12 @@ export default function Read() {
         fetchData()
     }, [id])
 
-    return <div>
+    return <><ProtectedPage />
+
         <h1>{pages.Read.name}</h1>
+
         {error && <h2>{error}</h2>}
+
         {journalData && <div>
             <h2>{`Title: ${journalData.title}`}</h2>
             <h2>{`Date: ${journalData.date}`}</h2>
@@ -45,5 +48,6 @@ export default function Read() {
                 <Editable readOnly />
             </Slate>
         </div>}
-    </div>
+
+    </>
 }

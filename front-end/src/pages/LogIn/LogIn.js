@@ -9,7 +9,7 @@ export default function LogIn() {
 
     async function testAccess() {
         try {
-            let response = await axiosClient.get('http://localhost:8080/protected')
+            let response = await axiosClient.get('http://localhost:8080/check-authentication')
             alert(response.data.msg)
         } catch (error) {
             errorHandler(error)
