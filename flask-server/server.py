@@ -197,7 +197,7 @@ def signup_user():
             )
             new_user.save()
             # Log user in after signing up
-            access_token = create_access_token(identity=email)
+            access_token = create_access_token(identity=data.get('email'))
             response_json = jsonify(msg='Login successful')
             set_access_cookies(response_json, access_token)
             return response_json, 200
