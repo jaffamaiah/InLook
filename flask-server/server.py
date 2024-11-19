@@ -120,6 +120,44 @@ def make_shell_context():
         "Journal" : Journal
     }
 
+# search journal by emotion
+# ex: http://localhost:8080/emotion-search?emotion=happy
+@app.route("/emotion-search", methods=["GET"])
+@api.marshal_with(journal_model)
+def search_journals():
+    # Get the emotion from the query parameters
+    emotion = request.args.get("emotion")
+
+    if not emotion:
+        return jsonify(msg="Emotion parameter is required"), 400
+
+    # Query the Journal model to find entries with the matching emotion
+    journals = Journal.query.filter_by(emotion=emotion).all()
+
+    if not journals:
+        return jsonify(msg="No journal entries found with that emotion"), 404
+
+    return journals, 200
+
+#search journal by keyword
+# ex: http://localhost:8080/title-search?keyword=happy
+@app.route("/title-search", methods=["GET"])
+@api.marshal_with(journal_model)
+def search_journals_by_title():
+    # Get the keyword from the query parameters
+    keyword = request.args.get("keyword")
+
+    if not keyword:
+        return jsonify(msg="Keyword parameter is required"), 400
+
+    # Use the `like` operator for partial matching
+    search_pattern = f"%{keyword}%"
+    journals = Journal.query.filter(Journal.title.like(search_pattern)).all()
+
+    if not journals:
+        return jsonify(msg="No journal entries found with that keyword in the title"), 404
+
+    return journals, 200
 
 # ==================== LOGIN ENDPOINT ====================
 @app.route("/login", methods=["POST"])
@@ -139,15 +177,6 @@ def login_user():
     else:
         return jsonify(msg="Wrong password!"), 401
 
-@app.route('/protected', methods=['GET'])
-@jwt_required()
-def protected():
-    current_user = get_jwt_identity()
-    if current_user is None:
-        return jsonify(msg='Not signed in'), 401
-
-    return jsonify(msg=('Hello, %s!' % current_user)), 200
-
 
 # ==================== SIGN-UP ENDPOINT ====================
 @app.route('/signup', methods=["POST"])
@@ -164,6 +193,17 @@ def signup_user():
             return jsonify(msg="An account with that email already exists!"), 403
 
         return jsonify(msg=("Successfully created account with email \'%s\'" % data.get('email'))), 201
+
+
+# ==================== AUTHENTICATION CHECK =====================
+@app.route('/check-authentication', methods=['GET'])
+@jwt_required()
+def check_authentication():
+    current_user = get_jwt_identity()
+    if current_user is None:
+        return jsonify(msg='Not signed in'), 401
+
+    return jsonify(msg=('Hello, %s!' % current_user)), 200
 
 
 # ==================== HEALTH-CHECK ENDPOINT ====================
