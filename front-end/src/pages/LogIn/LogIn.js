@@ -54,13 +54,14 @@ export default function Login() {
     }
 
     return <>
+        <h1>{isLogin ? pages.LogIn.name : 'Sign Up'}</h1>
+    
         <button onClick={toggleForm}>
-            {isLogin ? 'Switch to Signup' : 'Switch to Login'}
+            {isLogin ? 'Switch to Sign Up' : 'Switch to Log In'}
         </button>
 
         {isLogin &&
             <div>
-                <h1>{pages.LogIn.name}</h1>
                 <form>
                     <div>
                         <input type='email' onChange={(e) => setEmail(e.target.value)} />
@@ -79,7 +80,6 @@ export default function Login() {
 
         {!isLogin &&
             <div>
-                <h1>Sign Up</h1>
                 <form>
                     <div>
                         <input type='email' onChange={(e) => setEmail(e.target.value)} />
