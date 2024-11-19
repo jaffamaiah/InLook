@@ -43,8 +43,8 @@ export const pages = {
         path: '/my-journal/:id',
         component: <Read />,
     },
-    AccountSettings: {
-        name: 'Account Settings',
+    Account: {
+        name: 'Account',
         path: '/settings',
         component: <div/>,
     },

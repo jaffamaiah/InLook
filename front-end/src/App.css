@@ -1,6 +1,14 @@
 .main-section {
-    width: 100vw;
-    height: 90vh;
     position: absolute;
+    width: 100vw;
+    height: 93vh;
     bottom: 0;
+}
+
+h1 {
+    color: black;
+    font-weight: 800;
+    font-size: 1.8vw;
+    letter-spacing: 0.06vw;
+    text-align: center;
 }

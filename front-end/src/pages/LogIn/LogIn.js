@@ -22,11 +22,10 @@ export default function Login() {
             return alert('Password has been left blank!')
 
         try {
-            let response = await axiosClient.post('http://localhost:8080/login', {
+            await axiosClient.post('http://localhost:8080/login', {
                 email: email,
                 password: password
             })
-            alert(response.data.msg)
             navigate(pages.MyJournal.path)
         } catch (error) {
             errorHandler(error)

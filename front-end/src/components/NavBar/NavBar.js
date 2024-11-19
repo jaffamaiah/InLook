@@ -46,13 +46,13 @@ export default function NavBar() {
                 <li>
                     <a id='emotions' href={pages.Emotions.path}>
                         <img id='heart' src='/NavBar/Heart.svg' alt='' />
-                        Emotions
+                        {pages.Emotions.name}
                     </a>
                 </li>
                 <li>
-                    <a id='account-settings' href={pages.AccountSettings.path}>
+                    <a id='account-settings' href={pages.Account.path}>
                         <img id='settings' src='/NavBar/Settings.svg' alt='' />
-                        Account Settings
+                        {pages.Account.name}
                     </a>
                 </li>
             </ul>

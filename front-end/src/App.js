@@ -6,7 +6,7 @@ import './App.css'
 
 
 export default function App() {
-    return <div>
+    return <>
         <div className='main-section'>
             <BrowserRouter>
                 <Routes>{
@@ -24,5 +24,5 @@ export default function App() {
         <div className='navbar'>
             <NavBar />
         </div>
-    </div>
+    </>
 }
