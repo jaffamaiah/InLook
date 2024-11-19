@@ -28,7 +28,7 @@ export default function MyJournal() {
 
         {error && <h2>{error}</h2>}
 
-        {journalEntries && (
+        {journalEntries && 
             <nav className='journal-grid'>
                 <NewIcon />
                 {journalEntries.toReversed().map(journal => (
@@ -40,6 +40,6 @@ export default function MyJournal() {
                     />
                 ))}
             </nav>
-        )}
+        }
     </>
 }

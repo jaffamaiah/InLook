@@ -1,10 +1,13 @@
 /* TOPBAR */
 .topbar {
+    position: fixed;
+    width: 99%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0.5vw;
-    width: 100vw;
+    background-color: white;
+    border-bottom: 1px solid black;
 }
 
 .hamburger-menu {
@@ -25,7 +28,7 @@
 
 /* SIDEBAR */
 .sidebar {
-    position: absolute;
+    position: fixed;
     height: 100%;
     width: 21%;
     left: -22%;
