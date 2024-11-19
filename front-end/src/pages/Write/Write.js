@@ -37,7 +37,7 @@ export default function Write() {
             return alert('Title has been left blank!')
         if (journalEntryText.length === 0)
             return alert('Journal has been left blank!')
-
+      
         try {
             let response = await axiosClient.post('http://localhost:8080/create-journal', {
                 title: title,
