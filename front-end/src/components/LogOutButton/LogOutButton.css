@@ -5,6 +5,7 @@
     color: black;
     font-size: 4vh;
     letter-spacing: 0.05vw;
+    cursor: pointer;
 }
 
 .logout-button img {

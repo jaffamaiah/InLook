@@ -1,4 +1,4 @@
-import { Home, LogIn, SignUp, Write, MyJournal, Read, Page404 } from '../pages'
+import { Home, LogIn, Write, MyJournal, Read, Page404 } from '../pages'
 
 
 export const emotions = {
@@ -28,11 +28,6 @@ export const pages = {
         path: '/login',
         component: <LogIn />,
     },
-    SignUp: {
-        name: 'Sign Up',
-        path: '/signup',
-        component: <SignUp />,
-    },
     Write: {
         name: 'Write Journal',
         path: '/write',
@@ -48,8 +43,8 @@ export const pages = {
         path: '/my-journal/:id',
         component: <Read />,
     },
-    AccountSettings: {
-        name: 'Account Settings',
+    Account: {
+        name: 'Account',
         path: '/settings',
         component: <div/>,
     },
