@@ -51,7 +51,8 @@ journal_model=api.model(
         "title":fields.String(),
         "entry_text":fields.String(),
         "date":fields.String(),
-        "emotion":fields.String()
+        "emotion":fields.String(),
+        "user_email":fields.String()
     }
 )
 
@@ -99,7 +100,7 @@ def get_all_journals():
     if (current_user is None):
         return jsonify(msg='Not signed in'), 401
     
-    journals=Journal.query.all() # TODO: only get user's journals
+    journals = Journal.query.filter_by(user_email=current_user).all()
     if journals == []:
         return journals, 404
     else:
@@ -118,7 +119,10 @@ class JournalResource(Resource):
             return jsonify(msg='Not signed in'), 401
         
         """Get Journal"""
-        journal=Journal.query.get_or_404(id) #TODO: only get user's journal
+        journal=Journal.query.filter_by(
+           id=id,
+           user_email=current_user
+        ).first_or_404()
         return journal
     
     @api.marshal_with(journal_model)
@@ -130,7 +134,10 @@ class JournalResource(Resource):
         if (current_user is None):
             return jsonify(msg='Not signed in'), 401
         
-        journal_to_update=Journal.query.get_or_404(id) #TODO: only update user's journal
+        journal_to_update=Journal.query.filter_by(
+           id=id,
+           user_email=current_user
+        ).first_or_404()
         data=request.get_json()
         journal_to_update.update(data.get('title'), data.get('entry_text'))
         return journal_to_update
@@ -144,7 +151,10 @@ class JournalResource(Resource):
         if (current_user is None):
             return jsonify(msg='Not signed in'), 401
 
-        journal_to_delete=Journal.query.get_or_404(id) #TODO: only delete user's journal
+        journal_to_delete=Journal.query.filter_by(
+           id=id,
+           user_email=current_user
+        ).first_or_404()
         journal_to_delete.delete()
         return journal_to_delete
     
