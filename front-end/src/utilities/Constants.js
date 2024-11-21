@@ -1,4 +1,4 @@
-import { Home, LogIn, Write, MyJournal, Read, Page404 } from '../pages'
+import { Home, LogIn, Write, Read, MyJournal, Page404, Account } from '../pages'
 
 
 export const emotions = {
@@ -33,30 +33,30 @@ export const pages = {
         path: '/write',
         component: <Write />,
     },
-    MyJournal: {
-        name: 'My Journal',
-        path: '/my-journal',
-        component: <MyJournal />,
-    },
     Read: {
         name: 'Read Journal',
         path: '/my-journal/:id',
         component: <Read />,
     },
+    MyJournal: {
+        name: 'My Journal',
+        path: '/my-journal',
+        component: <MyJournal />,
+    },
     Account: {
         name: 'Account',
-        path: '/settings',
-        component: <div/>,
+        path: '/account',
+        component: <Account />,
     },
     Profile: {
         name: 'My Profile',
         path: '/profile',
-        component: <div/>,
+        component: <div />,
     },
     Emotions: {
         name: 'Emotions',
         path: '/emotions',
-        component: <div/>,
+        component: <div />,
     },
     Page404: {
         name: '404: Page not found...',

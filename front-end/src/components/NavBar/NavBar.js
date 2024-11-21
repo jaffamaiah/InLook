@@ -30,7 +30,7 @@ export default function NavBar(args) {
 
         <nav id='sidebar' className={`sidebar ${isOpen ? 'open' : ''}`}>
 
-            <img id='x' className='x' src='/NavBar/X.svg' alt='close' onClick={toggleSidebar} />
+            <img id='x' className='x' src='/NavBar/X.svg' alt='Close Navbar' onClick={toggleSidebar} />
 
             <a href={pages.Profile.path} className='profile-section'>
                 <img src='/NavBar/Account_Circle.svg' alt='' />
