@@ -1,4 +1,4 @@
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, set_access_cookies
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, set_access_cookies, get_jwt
 from flask_restx import Api, Resource, fields
 from flask_migrate import Migrate
 from flask_cors import CORS
@@ -25,7 +25,11 @@ app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET')  # Set JWT Secret
 app.config['JWT_TOKEN_LOCATION'] = ['cookies']  # Set token location to cookies
 app.config['JWT_COOKIE_SECURE'] = True  # Set cookie to be secure
 app.config['JWT_COOKIE_HTTP_ONLY'] = True  # Set cookie to be HTTP-only
+app.config['JWT_COOKIE_CSRF_PROTECT'] = False
 jwt = JWTManager(app)
+
+# Logout
+revoked_tokens = set()
 
 # Logging
 try:
@@ -47,7 +51,8 @@ journal_model=api.model(
         "title":fields.String(),
         "entry_text":fields.String(),
         "date":fields.String(),
-        "emotion":fields.String()
+        "emotion":fields.String(),
+        "user_email":fields.String()
     }
 )
 
@@ -61,9 +66,16 @@ user_model=api.model(
 
 
 # ==================== JOURNAL ENDPOINTS ====================
+
 @app.route("/create-journal", methods=["POST"])
 @api.marshal_with(journal_model)
+@jwt_required()
 def create_journal():
+    # check if user is logged in
+    current_user = get_jwt_identity() if get_jwt()['jti'] not in revoked_tokens else None 
+    if (current_user is None):
+        return jsonify(msg='Not signed in'), 401
+    
     data = request.get_json()
     # formatting date time string to mm-dd-yyyy
     date_time_string = data.get('date_time')
@@ -73,15 +85,22 @@ def create_journal():
         title=data.get('title'),
         entry_text=data.get('entry_text'),
         date=formatted_date,
-        emotion=data.get('emotion')
+        emotion=data.get('emotion'),
+        user_email = current_user
     )
     new_journal.save()
     return new_journal, 201
 
 @app.route("/get-all-journals", methods=["GET"])
 @api.marshal_with(journal_model)
+@jwt_required()
 def get_all_journals():
-    journals=Journal.query.all()
+    # check if user is logged in
+    current_user = get_jwt_identity() if get_jwt()['jti'] not in revoked_tokens else None 
+    if (current_user is None):
+        return jsonify(msg='Not signed in'), 401
+    
+    journals = Journal.query.filter_by(user_email=current_user).all()
     if journals == []:
         return journals, 404
     else:
@@ -92,25 +111,52 @@ def get_all_journals():
 @api.route('/journal/<int:id>')
 class JournalResource(Resource):
     @api.marshal_with(journal_model)
+    @jwt_required()
     def get(self,id):
+        # check if user is logged in
+        current_user = get_jwt_identity() if get_jwt()['jti'] not in revoked_tokens else None 
+        if (current_user is None):
+            return jsonify(msg='Not signed in'), 401
+        
         """Get Journal"""
-        journal=Journal.query.get_or_404(id)
+        journal=Journal.query.filter_by(
+           id=id,
+           user_email=current_user
+        ).first_or_404()
         return journal
     
     @api.marshal_with(journal_model)
+    @jwt_required()
     def put(self,id):
         """Update Journal"""
-        journal_to_update=Journal.query.get_or_404(id)
+        # check if user is logged in
+        current_user = get_jwt_identity() if get_jwt()['jti'] not in revoked_tokens else None 
+        if (current_user is None):
+            return jsonify(msg='Not signed in'), 401
+        
+        journal_to_update=Journal.query.filter_by(
+           id=id,
+           user_email=current_user
+        ).first_or_404()
         data=request.get_json()
         journal_to_update.update(data.get('title'), data.get('entry_text'))
         return journal_to_update
     
     @api.marshal_with(journal_model)
+    @jwt_required()
     def delete(self,id):
-       """Delete Journal"""
-       journal_to_delete=Journal.query.get_or_404(id)
-       journal_to_delete.delete()
-       return journal_to_delete
+        """Delete Journal"""
+        # check if user is logged in
+        current_user = get_jwt_identity() if get_jwt()['jti'] not in revoked_tokens else None 
+        if (current_user is None):
+            return jsonify(msg='Not signed in'), 401
+
+        journal_to_delete=Journal.query.filter_by(
+           id=id,
+           user_email=current_user
+        ).first_or_404()
+        journal_to_delete.delete()
+        return journal_to_delete
     
 
 @app.shell_context_processor
@@ -124,6 +170,7 @@ def make_shell_context():
 # ex: http://localhost:8080/emotion-search?emotion=happy
 @app.route("/emotion-search", methods=["GET"])
 @api.marshal_with(journal_model)
+@jwt_required()
 def search_journals():
     # Get the emotion from the query parameters
     emotion = request.args.get("emotion")
@@ -143,6 +190,7 @@ def search_journals():
 # ex: http://localhost:8080/title-search?keyword=happy
 @app.route("/title-search", methods=["GET"])
 @api.marshal_with(journal_model)
+@jwt_required()
 def search_journals_by_title():
     # Get the keyword from the query parameters
     keyword = request.args.get("keyword")
@@ -178,6 +226,15 @@ def login_user():
         return jsonify(msg="Wrong password!"), 401
 
 
+# ==================== LOGOUT ENDPOINT ====================
+@app.route('/logout', methods=["POST"])
+@jwt_required()
+def logout_user():
+    current_token = get_jwt()['jti']
+    revoked_tokens.add(current_token)
+    return jsonify(msg="Successfully logged out"), 200
+
+
 # ==================== SIGN-UP ENDPOINT ====================
 @app.route('/signup', methods=["POST"])
 def signup_user():
@@ -189,20 +246,24 @@ def signup_user():
                 password=generate_password_hash(data.get('password'))
             )
             new_user.save()
+            # Log user in after signing up
+            access_token = create_access_token(identity=data.get('email'))
+            response_json = jsonify(msg='Login successful')
+            set_access_cookies(response_json, access_token)
+            return response_json, 200
+
         except:
             return jsonify(msg="An account with that email already exists!"), 403
-
-        return jsonify(msg=("Successfully created account with email \'%s\'" % data.get('email'))), 201
 
 
 # ==================== AUTHENTICATION CHECK =====================
 @app.route('/check-authentication', methods=['GET'])
 @jwt_required()
 def check_authentication():
-    current_user = get_jwt_identity()
-    if current_user is None:
-        return jsonify(msg='Not signed in'), 401
+    current_user = get_jwt_identity() if get_jwt()['jti'] not in revoked_tokens else None
 
+    if (current_user is None):
+        return jsonify(msg='Not signed in'), 401
     return jsonify(msg=('Hello, %s!' % current_user)), 200
 
 
