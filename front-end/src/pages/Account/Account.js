@@ -13,21 +13,18 @@ export default function Account() {
     async function updateEmail() {
         if (newEmail.length === 0)
             return alert('Email has been left blank!')
-
         updateUserInfo({ email: newEmail })
     }
 
     async function updateUsername() {
         if (newUsername.length === 0)
             return alert('Username has been left blank!')
-
         updateUserInfo({ username: newUsername })
     }
 
     async function updatePassword() {
         if (newPassword.length <= 8)
             return alert('Password must be at least 8 characters in length!')
-
         updateUserInfo({ password: newPassword })
     }
 
@@ -42,19 +39,23 @@ export default function Account() {
 
     async function deleteAccount() {
         try {
-            let response = await axiosClient.post('http://localhost:8080/<endpoint>', {
+            let response = await axiosClient.post('http://localhost:8080/<endpoint>', { //TODO: set endpoint
                 password: deletePassword
-            }) //TODO: set endpoint
+            })
             alert(response.data.msg)
         } catch (error) {
             errorHandler(error)
         }
     }
 
-    return <>
-        {/* <ProtectedPage/> */}
+    async function changeProfilePicture() {
+        //TODO
+        console.log("changed pfp")
+    }
+
+    return <><ProtectedPage/>
         <div className='profile-picture-section'>
-            <div className='profile-section'>
+            <div className='profile-section' onClick={changeProfilePicture}>
                 <img src='/NavBar/Account_Circle.svg' alt='' />
                 <div>Change picture</div>
             </div>
@@ -68,17 +69,14 @@ export default function Account() {
                     <input type='email' onChange={(e) => setNewEmail(e.target.value)} />
                     <button type='button' onClick={updateEmail} >Change Email</button>
                 </div>
-
                 <div>
                     <input type='username' onChange={(e) => setNewUsername(e.target.value)} />
                     <button type='button' onClick={updateUsername} >Change Username</button>
                 </div>
-
                 <div>
                     <input type='password' onChange={(e) => setNewPassword(e.target.value)} />
                     <button type='button' onClick={updatePassword} >Change Password</button>
                 </div>
-
             </form>
         </div>
 
