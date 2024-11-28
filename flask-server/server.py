@@ -159,6 +159,90 @@ def search_journals_by_title():
 
     return journals, 200
 
+# ================== ACCOUNT ENDPOINTS ====================
+
+# change email
+@app.route('/change-email', methods=['PUT'])
+@jwt_required()
+def change_email():
+    current_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_email).first()
+    if not user:
+        return jsonify(msg="User not found"), 404
+    data = request.get_json()
+    new_email = data.get('email')
+    if not new_email:
+        return jsonify(msg="Email is required"), 400
+    if User.query.filter_by(email=new_email).first():
+        return jsonify(msg="Email already in use"), 400
+    user.email = new_email
+    user.save()
+    return jsonify(msg="Email updated successfully"), 200
+
+# change username
+@app.route('/change-username', methods=['PUT'])
+@jwt_required()
+def update_username():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).first()
+    if not user:
+        return jsonify(msg="User not found"), 404
+    data = request.get_json()
+    new_username = data.get('username')
+    if not new_username:
+        return jsonify(msg="Username is required"), 400
+    user.username = new_username
+    user.save()
+    return jsonify(msg="Username updated successfully"), 200
+    
+# change password
+@app.route('/change-password', methods=['PUT'])
+@jwt_required()
+def update_password():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).first()
+    if not user:
+        return jsonify(msg="User not found"), 404
+    data = request.get_json()
+    new_password = data.get('password')
+    if not new_password:
+        return jsonify(msg="Password is required"), 400
+    # hash before putting in DB
+    user.password = generate_password_hash(new_password)
+    user.save()
+    return jsonify(msg="Password updated successfully"), 200
+
+# change picture
+@app.route('/change-profile-picture', methods=['PUT'])
+@jwt_required()
+def update_profile_picture():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).first()
+    if not user:
+        return jsonify(msg="User not found"), 404
+    data = request.get_json()
+    new_profile_picture = data.get('profile_picture')
+    if not new_profile_picture:
+        return jsonify(msg="Profile picture is required"), 400
+    user.profile_picture = new_profile_picture
+    user.save()
+    return jsonify(msg="Profile picture updated successfully"), 200
+    
+
+
+# delete account
+@app.route('/delete-user', methods=['DELETE'])
+@jwt_required()
+def delete_user():
+        current_user_email = get_jwt_identity()
+        user = User.query.filter_by(email=current_user_email).first()
+        if not user:
+            return jsonify(msg="User not found"), 404
+        user.delete()
+        return jsonify(msg="User account deleted successfully"), 200
+
+
+
 # ==================== LOGIN ENDPOINT ====================
 @app.route("/login", methods=["POST"])
 def login_user():
