@@ -12,6 +12,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: var(--offwhite);
     border-radius: 5px;
     border: 3px solid black;
     font-size: 6vw;

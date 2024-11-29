@@ -1,5 +1,5 @@
 .profile-picture-section {
-    border-right: 1px solid black;
+    border-right: 2px solid black;
     position: fixed;
     width: calc(18% - 1px);
     height: 93%;
@@ -17,7 +17,7 @@
 
 
 .account-settings-section {
-    border-bottom: 1px solid black;
+    border-bottom: 2px solid black;
     position: fixed;
     width: calc(82%);
     height: 63%;

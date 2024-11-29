@@ -51,7 +51,7 @@ export default function Write() {
         }
     }
 
-    return <>
+    return <div className='gradient-background'>
 
         <h1>{pages.Write.name}</h1>
 
@@ -74,5 +74,5 @@ export default function Write() {
         <button className='submit-button' type='button' onClick={submitJournal} >Submit</button>
     
         <ProtectedPage />
-    </>
+    </div>
 }
