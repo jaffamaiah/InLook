@@ -51,7 +51,7 @@ export default function Write() {
         }
     }
 
-    return <><ProtectedPage />
+    return <>
 
         <h1>{pages.Write.name}</h1>
 
@@ -72,5 +72,7 @@ export default function Write() {
         </div>
 
         <button className='submit-button' type='button' onClick={submitJournal} >Submit</button>
+    
+        <ProtectedPage />
     </>
 }
