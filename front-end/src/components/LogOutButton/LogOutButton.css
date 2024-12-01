@@ -3,12 +3,9 @@
     align-items: center;
     text-decoration: none;
     color: black;
-    font-size: 4vh;
-    letter-spacing: 0.05vw;
     cursor: pointer;
 }
 
 .logout-button img {
     padding: 10px;
-    height: 5vh;
 }

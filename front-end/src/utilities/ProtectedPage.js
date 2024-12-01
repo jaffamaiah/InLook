@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { axiosClient, pages } from "./";
 import { useNavigate } from "react-router-dom";
+import { NavBar } from "../components";
 
 export default function ProtectedPage() {
 
@@ -17,5 +18,5 @@ export default function ProtectedPage() {
         fetchData()
     })
 
-    return <></>
+    return <NavBar />
 }

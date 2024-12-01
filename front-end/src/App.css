@@ -1,8 +1,22 @@
+:root {
+    --offwhite: #f4f5f7;
+    --purple: #AE8CF8;
+    --pink: #F96C7E;
+    --orange: #FDAA55;
+}
+
 .main-section {
     position: absolute;
     width: 100vw;
     height: 93vh;
     bottom: 0;
+}
+
+.gradient-background {
+    position: absolute;
+    width: 100vw;
+    height: 93vh;
+    background-image: linear-gradient(to bottom, var(--purple), var(--pink), var(--orange));
 }
 
 h1 {

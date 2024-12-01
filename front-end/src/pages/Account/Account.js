@@ -53,7 +53,8 @@ export default function Account() {
         console.log("changed pfp")
     }
 
-    return <><ProtectedPage/>
+    return <div className='gradient-background'>
+
         <div className='profile-picture-section'>
             <div className='profile-section' onClick={changeProfilePicture}>
                 <img src='/NavBar/Account_Circle.svg' alt='' />
@@ -88,5 +89,7 @@ export default function Account() {
                 <button type='button' onClick={deleteAccount} >Delete Account</button>
             </div>
         </div>
-    </>
+
+        <ProtectedPage />
+    </div>
 }

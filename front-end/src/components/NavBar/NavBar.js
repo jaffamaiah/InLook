@@ -5,7 +5,7 @@ import { pages } from '../../utilities'
 import LogOutButton from '../LogOutButton/LogOutButton'
 
 
-export default function NavBar() {
+export default function NavBar(args) {
 
     const [isOpen, setIsOpen] = useState(false)
 
@@ -21,7 +21,10 @@ export default function NavBar() {
             </a>
             <div className='spacer' />
             <div className='topbar-logout'>
-                <LogOutButton />
+                {!args.isLoggedIn
+                    ? <LogOutButton />
+                    : <h2>login</h2>
+                }
             </div>
         </div>
 

@@ -35,7 +35,7 @@ export default function Read() {
         fetchData()
     }, [id])
 
-    return <><ProtectedPage />
+    return <div className='gradient-background'>
 
         <h1>{pages.Read.name}</h1>
 
@@ -49,5 +49,6 @@ export default function Read() {
             </Slate>
         </div>}
 
-    </>
+        <ProtectedPage />
+    </div>
 }

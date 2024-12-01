@@ -45,7 +45,7 @@ export default function MyJournal() {
         getAllJournals()
     }, [])
 
-    return <><ProtectedPage />
+    return <div className='gradient-background'>
 
         <nav className='search-section'>
             <h1>{pages.MyJournal.name}</h1>
@@ -72,5 +72,6 @@ export default function MyJournal() {
             </nav>
         </nav>
 
-    </>
+        <ProtectedPage />
+    </div>
 }

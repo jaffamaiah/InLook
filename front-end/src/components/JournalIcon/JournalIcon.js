@@ -7,7 +7,7 @@ import { emotions } from '../../utilities'
 
 export default function JournalIcon(args) {
     const navigate = useNavigate()
-    const [color, setColor] = useState('white')
+    const [color, setColor] = useState('var(--offwhite)')
 
     useEffect(() => {
         if (emotions[args.emotion]) {

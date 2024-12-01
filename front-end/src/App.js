@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-import { NavBar } from './components'
 import { pages } from './utilities'
 import './App.css'
 
@@ -19,10 +18,6 @@ export default function App() {
                     ))
                 }</Routes>
             </BrowserRouter>
-        </div>
-        
-        <div className='navbar'>
-            <NavBar />
         </div>
     </>
 }

@@ -53,7 +53,7 @@ export default function Login() {
         }
     }
 
-    return <>
+    return <div className='gradient-background' style={{height:'100vh', bottom:0}}>
         <h1>{isLogin ? pages.LogIn.name : 'Sign Up'}</h1>
     
         <button onClick={toggleForm}>
@@ -101,5 +101,5 @@ export default function Login() {
             </div>
         }
 
-    </>
+    </div>
 }

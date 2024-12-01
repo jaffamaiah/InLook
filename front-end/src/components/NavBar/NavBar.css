@@ -2,23 +2,27 @@
 .topbar {
     position: fixed;
     width: 100%;
-    height: 7%;
+    top: 0;
+    height: 7vh;
     display: flex;
-    justify-content:space-between;
+    justify-content: space-between;
     align-items: center;
     padding: 0.5vw;
-    background-color: white;
-    border-bottom: 1px solid black;
+    background-image: linear-gradient(to bottom, var(--orange), var(--pink));
+    border-bottom: 2px solid black;
+    font-weight: 600;
+    font-size: 1.8vw;
+    letter-spacing: 0.06vw;
 }
 
 .hamburger-menu {
-    height: 8vh;
+    height: 9vh;
     padding-right: 2vw;
     cursor: pointer;
 }
 
 .logo {
-    height: 5.5vh;
+    height: 7vh;
 }
 
 .topbar-logout {
@@ -37,8 +41,10 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: #f4f5f7;
+    background-color: var(--offwhite);
     font-weight: 600;
+    font-size: 1.8vw;
+    letter-spacing: 0.06vw;
     filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25));
     transition: left 0.4s ease-in-out;
 }
@@ -65,10 +71,8 @@
 .profile-section {
     align-self: center;
     text-align: center;
-    font-size: 1.8vw;
     text-decoration: none;
     color: black;
-    letter-spacing: 0.06vw;
 }
 
 .profile-section img {
@@ -87,13 +91,12 @@
     padding-right: 0.8vw;
     width: 3.6vw;
 }
+
 .nav-links a {
     display: flex;
     align-items: center;
     text-decoration: none;
     color: black;
-    font-size: 1.8vw;
-    letter-spacing: 0.06vw;
     padding-bottom: 30px;
 }
 
