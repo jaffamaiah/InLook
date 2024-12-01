@@ -179,7 +179,10 @@ def search_journals():
         return jsonify(msg="Emotion parameter is required"), 400
 
     # Query the Journal model to find entries with the matching emotion
-    journals = Journal.query.filter_by(emotion=emotion).all()
+    journals = Journal.query.filter_by(
+           emotion=emotion,
+           user_email=get_jwt_identity()
+        )
 
     if not journals:
         return jsonify(msg="No journal entries found with that emotion"), 404
@@ -200,7 +203,8 @@ def search_journals_by_title():
 
     # Use the `like` operator for partial matching
     search_pattern = f"%{keyword}%"
-    journals = Journal.query.filter(Journal.title.like(search_pattern)).all()
+    journals_by_title = Journal.query.filter(Journal.title.like(search_pattern)).all()
+    journals = [journal for journal in journals_by_title if journal.user_email == get_jwt_identity()]
 
     if not journals:
         return jsonify(msg="No journal entries found with that keyword in the title"), 404
