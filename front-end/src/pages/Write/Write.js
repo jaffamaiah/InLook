@@ -45,7 +45,7 @@ export default function Write() {
                 date_time: todaysDate.toISOString(),
                 emotion: (!!emotion ? emotion : '') // empty string if emotion is null
             })
-            navigate(pages.MyJournal.path + `/${response.data.id}`)
+            navigate(pages.MyJournal.path)
         } catch (error) {
             errorHandler(error)
         }
