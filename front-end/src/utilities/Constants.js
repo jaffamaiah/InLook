@@ -4,15 +4,15 @@ import { Home, LogIn, Write, Read, MyJournal, Page404, Account } from '../pages'
 export const emotions = {
     happy: {
         name: 'Happy',
-        color: 'yellow'
+        color: '#FFFF53',
     },
     sad: {
         name: 'Sad',
-        color: 'blue'
+        color: '#4A47FF'
     },
     angry: {
         name: 'Angry',
-        color: 'red'
+        color: '#FF2D2D'
     }
 }
 
