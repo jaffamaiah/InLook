@@ -39,7 +39,7 @@ export default function Write() {
             return alert('Journal has been left blank!')
       
         try {
-            let response = await axiosClient.post('http://localhost:8080/create-journal', {
+            await axiosClient.post('http://localhost:8080/create-journal', {
                 title: title,
                 entry_text: journalEntryText,
                 date_time: todaysDate.toISOString(),
