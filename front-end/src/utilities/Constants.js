@@ -1,4 +1,4 @@
-import { Home, LogIn, Write, Read, MyJournal, Page404, Account } from '../pages'
+import { Home, LogIn, Write, Read, MyJournal, Page404, Account, Profile, Emotions } from '../pages'
 
 
 export const emotions = {
@@ -51,12 +51,12 @@ export const pages = {
     Profile: {
         name: 'My Profile',
         path: '/profile',
-        component: <div />,
+        component: <Profile />,
     },
     Emotions: {
         name: 'Emotions',
         path: '/emotions',
-        component: <div />,
+        component: <Emotions />,
     },
     Page404: {
         name: '404: Page not found...',
