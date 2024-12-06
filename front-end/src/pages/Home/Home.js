@@ -8,11 +8,11 @@ export default function Home() {
         <div className='landing-section'>
             <img className='landing-logo' src='/NavBar/Logo.svg' alt='Logo' />
             <h1>
-                a journaling platform <br />
-                for blah blah blah blah
+                Journaling made simple,<br />
+                growth made possible.
             </h1>
             <h2 className='landing-paragraph2'>
-                This is smaller text about something less important than the thing above. Idk what to put here. I feel like there should be buttons under this to direct to other pages? but I think we have it set up for the user to use the nav bar and anywhere they need access will direct to login/ sign up so idk
+            Discover the power of journalling with InLook - a web app designed to make journaling convenient and accessible from your computer. Whether you're jotting down thoughts, exploring your emotions, or taking a moment for yourself, InLook offers a seamless experience to support your well-being. Your journey to clarity and growth begins here - Take an InLook today.
             </h2>
             <nav className='landing-buttons'>
                 <a href={pages.LogIn.path}>
